@@ -51,9 +51,13 @@ a:hover{
 
 @keyframes fancyColor{
 	0%{
+		-webkit-filter: hue-rotate(0deg);
+		-o-filter: hue-rotate(0deg);
 		filter: hue-rotate(0deg);
 	}
 	100%{
+		-webkit-filter: hue-rotate(360deg);
+		-o-filter: hue-rotate(360deg);
 		filter: hue-rotate(360deg);
 	}
 }
@@ -66,13 +70,23 @@ h1{
 	font-size: 1.5em;
 	font-weight: bolder;
 	padding-left: .5em;
-	border-left: 5px solid #000;
+	border-left: 5px solid #FF9300;
 	margin: .5em 0;
 }
 h2{
 	font-size: 1.2em;
 	font-weight: bolder;
 	margin: .5em 0;
+	align-items: center;
+	position: relative;
+}
+h2:before{
+	content: ">> ";
+	color: #d4d4d4;
+}
+h2:after{
+	content: " <<";
+	color: #d4d4d4;
 }
 
 p{
@@ -81,6 +95,10 @@ p{
 
 section{
 	margin-bottom: 1.5em;
+}
+
+strong{
+	font-weight: bolder;
 }
 
 /*2.1. Inputy*/
@@ -107,6 +125,9 @@ button:hover{
 button[disabled]{
 	background: #d4d4d4;
 	pointer-events: none;
+}
+label{
+	cursor: pointer;
 }
 
 /*3. STYLE KONTENERÓW ---------------------------------------------------------------*/
@@ -142,6 +163,12 @@ button[disabled]{
 }
 .tool-cont > *:not(:last-child){
 	margin-right: 1em;
+}
+.columned{
+	-webkit-column-count: 5;
+	-moz-column-count: 5;
+	-o-column-count: 5;
+	column-count: 5;
 }
 
 /*3.1. Rozwijane szczegóły*/

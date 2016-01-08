@@ -8,9 +8,9 @@
 			{"text":"renaissance", "flags":["mid tech"]}, 
 			{"text":"enlightment", "flags":["social changes", "mid tech"]}, 
 			{"text":"industrial revolution", "flags":["early industrial"]}, 
-			{"text":"early 20th century", "flags":["modern tech"]},
-			{"text":"contemporary times", "flags":["modern tech", "information revolution"]}, 
-			{"text":"space opera", "flags":["futuristic"]}
+			{"text":"early 20th century", "flags":["modern tech", "high tech"]},
+			{"text":"contemporary times", "flags":["modern tech", "information revolution", "high tech"]}, 
+			{"text":"space opera", "flags":["futuristic", "high tech"]}
 		],
 		"prob" : [2, 3, 4, 6, 3, 3, 5, 3, 5, 3, 2]
 	},
@@ -24,9 +24,6 @@
 			{"text":"magic is extremely powerful, it defines lives of all people", "flags":["high magic"]}
 		],
 		"prob" : [4, 2, 2, 3, 1, 1]		
-	},
-	"races" : {
-		"noneProb" : 5
 	},
 	"pop" : [[0.001,0.01], [0.005,0.08], [0.015,0.1], [0.1,0.2], [0.15,0.35], [0.2,0.5], [0.4,1], [0.7,2], [0.8,4], [1,3.5], [1,5], [1,6]],
 	"perks" : [
@@ -48,7 +45,7 @@
 		{
 			 "text" : "This world is just rebuilding after an apocalypse, with its civilizations destroyed and population almost completely wiped out",
 			  "req" : [],
-			"flags" : ["postapoc"]
+			"flags" : ["postapo"]
 		},
 		{
 			 "text" : "Metals are scarce, but humans have found another way to create technology",
@@ -106,7 +103,7 @@
 			"flags" : ["threat"]
 		},
 		{
-			 "text" : "This world has been peacful for a long time",
+			 "text" : "This world has been peaceful for a long time",
 			  "req" : ["!war"],
 			"flags" : ["peace"]
 		},
@@ -116,7 +113,7 @@
 			"flags" : ["dry"]
 		},
 		{
-			 "text" : "It orbits a binary sun",
+			 "text" : "The world orbits a binary sun",
 			  "req" : ["!sun"],
 			"flags" : ["sun"]
 		},
@@ -139,6 +136,206 @@
 			 "text" : "For one reason or another, magic is dying",
 			  "req" : ["!magic"],
 			"flags" : []
+		},
+		{
+			 "text" : "The climate is changing, pushing masses to migrate",
+			  "req" : ["!high tech"],
+			"flags" : ["threat", "social changes"]
+		},
+		{
+			 "text" : "Much of transportation is done via portals",
+			  "req" : ["high magic", "|futuristic"],
+			"flags" : ["portals"]
+		},
+		{
+			 "text" : "The world is heavily polluted",
+			  "req" : ["high tech", "|early industrial"],
+			"flags" : ["infertile"]
+		},
+		{
+			 "text" : "The world is heavily polluted with magic, to the points where it's next to impossible to live on huge wastes of land",
+			  "req" : ["high magic"],
+			"flags" : ["postapo"]
+		},
+		{
+			 "text" : "It's obvious that the world is dying",
+			  "req" : [],
+			"flags" : ["threat"]
+		},
+		{
+			 "text" : "The planet is dotted by underworld entrances",
+			  "req" : ["!no gods", "|high magic"],
+			"flags" : ["threat", "ruins"]
+		},
+		{
+			 "text" : "Deamons roam the mortal world",
+			  "req" : ["!no gods", "|high magic"],
+			"flags" : ["threat"]
+		},
+		{
+			 "text" : "Flora of this world is completely alien",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+			 "text" : "Fauna of this world is completely alien",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+			 "text" : "Fauna of this world is dangerous",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+			 "text" : "Flora of this world is dangerous",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+			 "text" : "Fungi are the most common lifeforms, growing into great forests",
+			  "req" : ["!dry"],
+			"flags" : []
+		},
+		{
+			 "text" : "The planet is almost completely tidialy locked to its sun, causing extreme weather conditions. Half of it is a red hot desert while the other is covered in snow",
+			  "req" : ["!sun"],
+			"flags" : ["sun", "extreme weather"]
+		},
+		{
+			 "text" : "There are no other stars on the sky",
+			  "req" : ["!sun"],
+			"flags" : ["sun"]
+		},
+		{
+			 "text" : "The sky should be empty. So why isn't it?",
+			  "req" : ["!sun"],
+			"flags" : ["sun"]
+		},
+		{
+			 "text" : "Most of lifeforms form symbiotic relationships",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+			 "text" : "Water in oceans is sweet",
+			  "req" : ["!dry"],
+			"flags" : ["fertile"]
+		},
+		{
+			 "text" : "Time travel is possible",
+			  "req" : [],
+			"flags" : ["time travel"]
+		},
+		{
+			 "text" : "There is a non-sapient species hunting humans",
+			  "req" : [],
+			"flags" : ["threat"]
+		},
+		{
+			 "text" : "There are  islands floting in the sky",
+			  "req" : ["high magic"],
+			"flags" : []
+		},
+		{
+			 "text" : "Ruins of ancient civilizations are almost everywhere",
+			  "req" : [],
+			"flags" : ["ruins"]
+		},
+		{
+			 "text" : "People live off what was left by ancient civilizations",
+			  "req" : ["ruins", "|war", "|postapo"],
+			"flags" : []
+		},
+		{
+			 "text" : "It's a deathworld",
+			  "req" : ["!peace"],
+			"flags" : ["infertile", "plague", "postapo"]
+		},
+		{
+			 "text" : "Magnetic field is very weak",
+			  "req" : [],
+			"flags" : ["extreme weather"]
+		},
+		{
+			 "text" : "A big chunk of the planet is missing",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+			 "text" : "The planet is dotted with craters",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+			 "text" : "The planet has very active volcanos",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+			 "text" : "Sandstorms are very common, often destroying whole settlements on their path",
+			  "req" : ["dry"],
+			"flags" : []
+		},
+		{
+			 "text" : "There are different chemical elements",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+			 "text" : "There is a strategic source of energy unknow to the Earth",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+			 "text" : "There are other dimensions you can travel to",
+			  "req" : [],
+			"flags" : ["multiverse"]
+		},
+		{
+			 "text" : "This world is a part of a bigger multiverse",
+			  "req" : [],
+			"flags" : ["multiverse"]
+		},
+		{
+			 "text" : "Reality is an ilusion",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+			 "text" : "A great disaster happend in a long-forgotten past, but the prophecy says it will happen again",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+			 "text" : "Many people long for the old, simpler ways",
+			  "req" : ["social changes"],
+			"flags" : []
+		},
+		{
+			 "text" : "Reality can be reshaped",
+			  "req" : ["high magic"],
+			"flags" : []
+		},
+		{
+			 "text" : "People are tired with the rulers and a great revolution is brewing",
+			  "req" : [],
+			"flags" : ["social changes"]
+		},
+		{
+			 "text" : "Food in this world is weird",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+			 "text" : "Oceans are scary",
+			  "req" : ["!dry"],
+			"flags" : []
+		},
+		{
+			 "text" : "The last ice age is just ending, with civilizations still in turmoil",
+			  "req" : ["cold"],
+			"flags" : ["postapo"]
 		}
 	],
 	"gods" : {
@@ -160,9 +357,22 @@
 				{"text":"chaos", "flags":["chaos"]},
 				{"text":"erotic love", "flags":["love"]},
 				{"text":"rain", "flags":["rain"]},
-				{"text":"life", "flags":["life"]}
+				{"text":"life", "flags":["life"]},
+				{"text":"darkness", "flags":["darkness"]},
+				{"text":"light", "flags":["light"]},
+				{"text":"tricksters", "flags":["tricksters"]},
+				{"text":"dawn", "flags":["dawn"]},
+				{"text":"storms", "flags":["storm"]},
+				{"text":"rain", "flags":["rain"]},
+				{"text":"nature", "flags":["nature"]},
+				{"text":"fertility", "flags":["fertility"]},
+				{"text":"hunting", "flags":["hunting"]},
+				{"text":"wisdom", "flags":["wisdom"]},
+				{"text":"fate", "flags":["fate"]},
+				{"text":"vengeance", "flags":["war"]},
+				{"text":"vengeance", "flags":["war"]}
 			],
-			"prob" : [5, 5, 7, 6, 4, 2, 4, 2, 3, 2, 1, 1, 2, 3, 2 ]
+			"prob" : [5, 5, 7, 6, 4, 2, 4, 2, 3, 2, 1, 1, 2, 3, 2, 2, 2, 2, 1, 3, 4, 5, 4, 4, 2, 3, 1 ]
 		},
 		"poliPerks" : [
 			{
@@ -196,9 +406,19 @@
 				"flags" : []
 			},
 			{
-				 "text" : "#nom is an ascended man",
-				  "req" : ["!bestial"],
+				 "text" : "#nom has switched #poss domain in the past",
+				  "req" : [],
 				"flags" : []
+			},
+			{
+				 "text" : "#nom exists outside the time",
+				  "req" : [],
+				"flags" : []
+			},
+			{
+				 "text" : "#nom is an ascended person",
+				  "req" : ["!bestial"],
+				"flags" : ["ascended"]
 			},
 			{
 				 "text" : "#nom has killed other gods",
@@ -232,18 +452,23 @@
 			},
 			{
 				 "text" : "it looks like a hulking beast",
-				  "req" : ["agendered"],
-				"flags" : ["bestial"]
+				  "req" : ["agendered", "!abstract", "!ascended"],
+				"flags" : ["bestial", "form-det"]
 			},
 			{
 				 "text" : "#nom appears as a very attractive human",
-				  "req" : ["!old", "!inactive"],
-				"flags" : ["attractive"]
+				  "req" : ["!form-det"],
+				"flags" : ["attractive", "human", "form-det"]
+			},
+			{
+				 "text" : "#nom never assumes visible form",
+				  "req" : ["!human", "!form-det"],
+				"flags" : ["abstract", "form-det"]
 			},
 			{
 				 "text" : "#nom often assumes a form of an old wanderer",
-				  "req" : ["!attractive", "!inactive"],
-				"flags" : ["old"]
+				  "req" : ["!form-det", "!inactive", "!love"],
+				"flags" : ["old", "human", "form-det"]
 			},
 			{
 				 "text" : "#poss followers treat worship very seriously",
@@ -252,13 +477,108 @@
 			},
 			{
 				 "text" : "#poss religion is very depressing",
-				  "req" : ["!joyful"],
+				  "req" : ["!joyful", "!love", "!fertility"],
 				"flags" : ["depressing"]
 			},
 			{
 				 "text" : "#poss religion is very joyful and full of festivities",
 				  "req" : ["!depressing", "!evil"],
 				"flags" : ["joyful"]
+			},
+			{
+				 "text" : "#nom gave fire to the men",
+				  "req" : ["!inactive", "!darkness"],
+				"flags" : []
+			},
+			{
+				 "text" : "#nom is a patron god of humans",
+				  "req" : ["!inactive"],
+				"flags" : []
+			},
+			{
+				 "text" : "#nom requires constant sacrifices",
+				  "req" : ["!inactive"],
+				"flags" : []
+			},
+			{
+				 "text" : "#nom accepts human sarifices",
+				  "req" : ["!inactive", "!sacrifice-det"],
+				"flags" : ["sacrifice-det"]
+			},
+			{
+				 "text" : "#nom prefers sacrifices from food and drinks",
+				  "req" : ["!inactive", "!sacrifice-det"],
+				"flags" : ["sacrifice-det"]
+			},
+			{
+				 "text" : "#nom prefers sacrifices from animals",
+				  "req" : ["!inactive", "!sacrifice-det", "!joyful"],
+				"flags" : ["sacrifice-det"]
+			},
+			{
+				 "text" : "#nom thinks selling blessings for money is funny",
+				  "req" : ["!inactive", "!sacrifice-det"],
+				"flags" : ["sacrifice-det"]
+			},
+			{
+				 "text" : "#nom favours honorable warriors",
+				  "req" : ["war"],
+				"flags" : []
+			},
+			{
+				 "text" : "#nom is seen as a great creator",
+				  "req" : ["powerful", "|false"],
+				"flags" : []
+			},
+			{
+				 "text" : "#nom looks like a person with a bird head",
+				  "req" : ["!form-det"],
+				"flags" : ["human", "form-det"]
+			},
+			{
+				 "text" : "#nom looks like a person with a lion head",
+				  "req" : ["!form-det"],
+				"flags" : ["human", "form-det"]
+			},
+			{
+				 "text" : "#nom looks like a person with a cat head",
+				  "req" : ["!form-det"],
+				"flags" : ["human", "form-det"]
+			},
+			{
+				 "text" : "#nom looks like a person with a dog head",
+				  "req" : ["!form-det"],
+				"flags" : ["human", "form-det"]
+			},
+			{
+				 "text" : "#poss form mixes elements of a person and an animal",
+				  "req" : ["!form-det"],
+				"flags" : ["human", "form-det"]
+			},
+			{
+				 "text" : "#nom often appears as an animal",
+				  "req" : ["!form-det"],
+				"flags" : ["bestial", "form-det"]
+			},
+			{
+				 "text" : "#nom is a great artist and #poss followers value art above all",
+				  "req" : [],
+				"flags" : []
+			},
+			{
+				 "text" : "#nom often have erotic affairs with mortals, causing outrage amongst other gods",
+				  "req" : [],
+				"flags" : []
+			},
+			{
+				 "text" : "#nom loves playing tricks on mortals and other gods alike",
+				  "req" : [],
+				"flags" : []
+			},
+			{
+				 "text" : "#nom exists in all possible realities",
+				  "req" : ["multiverse"],
+				"flags" : []
 			}
 		],
 		"monoPerks" : [
@@ -268,13 +588,18 @@
 				"flags" : ["omnipotent"]
 			},
 			{
+				 "text" : "#nom exists in all possible realities",
+				  "req" : ["multiverse"],
+				"flags" : []
+			},
+			{
 				 "text" : "#nom appears as a very attractive human",
-				  "req" : ["!old"],
+				  "req" : ["!old", "!inactive", "!abstract"],
 				"flags" : ["attractive"]
 			},
 			{
 				 "text" : "#nom often assumes a form of an old wanderer",
-				  "req" : ["!attractive"],
+				  "req" : ["!attractive", "!inactive", "!abstract"],
 				"flags" : ["old"]
 			},
 			{
@@ -283,9 +608,49 @@
 				"flags" : ["omniscient"]
 			},
 			{
+				 "text" : "#nom gained all knowledge and went mad",
+				  "req" : ["omniscient", "evil"],
+				"flags" : []
+			},
+			{
 				 "text" : "#nom is all good",
-				  "req" : ["!evil"],
+				  "req" : ["!evil", "!inactive", "!good"],
 				"flags" : ["good"]
+			},
+			{
+				 "text" : "#nom is a rather good deity, even though #nom treats mortals rather harshly",
+				  "req" : ["!evil", "!inactive", "!good"],
+				"flags" : ["good"]
+			},
+			{
+				 "text" : "#nom is evil",
+				  "req" : ["!good", "!inactive"],
+				"flags" : ["evil"]
+			},
+			{
+				 "text" : "#nom never assumes a visible form",
+				  "req" : ["!attractive", "!old"],
+				"flags" : ["abstract"]
+			},
+			{
+				 "text" : "#poss religion disallows creating #poss depictions",
+				  "req" : ["!attractive", "!old"],
+				"flags" : []
+			},
+			{
+				 "text" : "#poss religion changed so much over the years #poss depiction doesn't match with the original one at all",
+				  "req" : ["inactive", "!false"],
+				"flags" : []
+			},
+			{
+				 "text" : "#nom doesn't care for this world",
+				  "req" : ["!good", "!evil"],
+				"flags" : ["inactive"]
+			},
+			{
+				 "text" : "#nom doesn't care for mortals",
+				  "req" : ["!good", "!evil"],
+				"flags" : ["inactive"]
 			},
 			{
 				 "text" : "#nom is perfect",
@@ -305,6 +670,11 @@
 			{
 				 "text" : "#poss followers treat worship very seriously",
 				  "req" : [],
+				"flags" : ["serious"]
+			},
+			{
+				 "text" : "#poss religion is very organized and it persecutes heretics with terryfing effectivnes",
+				  "req" : [["good","|inactive"], "|evil"],
 				"flags" : ["serious"]
 			}
 		]
@@ -336,7 +706,7 @@
 					"flags" : []
 				},
 				{
-					 "text" : "they may look like humans, but they are much stronger than them",
+					 "text" : "they may look like humans, but they are much stronger",
 					  "req" : ["!frail"],
 					"flags" : ["muscular"]
 				},
@@ -468,8 +838,8 @@
 					{"text":"Water", "flags":["water"]},
 					{"text":"Fire", "flags":["fire"]},
 					{"text":"Hill", "flags":[]},
-					{"text":"High", "flags":[]},
-					{"text":"Half", "flags":[]},
+					{"text":"High", "flags":["high"]},
+					{"text":"Half", "flags":["half"]},
 					{"text":"Golden", "flags":[]},
 					{"text":"Great", "flags":[]},
 					{"text":"Smaller", "flags":[]},
@@ -664,7 +1034,27 @@
 					 "text" : "They are not very trusting to strangers",
 					  "req" : [],
 					"flags" : []
-				}	
+				},
+				{
+					 "text" : "They wage eternal war against the creatures from the depths",
+					  "req" : ["!world-no magic"],
+					"flags" : []
+				},
+				{
+					 "text" : "They have extreme digestive system - they can eat soil",
+					  "req" : [],
+					"flags" : []
+				},
+				{
+					 "text" : "They often replace their body parts with mechanical counterparts",
+					  "req" : ["world-high magic", "|world-high tech"],
+					"flags" : []
+				},
+				{
+					 "text" : "They ",
+					  "req" : ["world-high magic", "|world-high tech"],
+					"flags" : []
+				}
 			],
 			"kenderPerks" : [
 				{
@@ -689,6 +1079,11 @@
 				},
 				{
 					 "text" : "They sometimes explode into a gold glitter when punched",
+					  "req" : [],
+					"flags" : []
+				},
+				{
+					 "text" : "They don't see anything wrong with their behaviour, that's why most civilizations see them as pariahs",
 					  "req" : [],
 					"flags" : []
 				}
@@ -728,7 +1123,7 @@
 			{
 				 "text" : "They don't believe in any gods",
 				  "req" : ["!world-no gods", "!no gods"],
-				"flags" : ["!no gods"]
+				"flags" : ["no gods"]
 			},
 			{
 				 "text" : "In the ancient times their form was vastly different",
@@ -746,8 +1141,8 @@
 				"flags" : ["dumb"]
 			},
 			{
-				 "text" : "Humans seek their knowledge and they are happy tho share them",
-				  "req" : ["intelligent", "!aggressive", "!indifferent"],
+				 "text" : "Humans seek their knowledge and they are happy to share them",
+				  "req" : ["intelligent", "!aggressive", "!indifferent", "!fearsome"],
 				"flags" : ["friendly"]
 			},
 			{
@@ -804,7 +1199,50 @@
 				 "text" : "They are shapeshifters",
 				  "req" : [],
 				"flags" : ["shapeshifter"]
+			},
+			{
+				 "text" : "Their food is poisonus for humans",
+				  "req" : [],
+				"flags" : []
+			},
+			{
+				 "text" : "They are feared by humans",
+				  "req" : ["!friendly"],
+				"flags" : ["fearsome"]
+			},
+			{
+				 "text" : "Their skin looks metalic",
+				  "req" : ["moon", "|iron", "|high", "|golden"],
+				"flags" : []
+			},
+			{
+				 "text" : "Their ancestors have been mingling with people for ages",
+				  "req" : ["half"],
+				"flags" : []
 			}
 		]
-	}
+	},
+    "civs" : {
+        governments : [
+            {
+                 "text" : "anarchy",
+                  "req" : [],
+                "flags" : ["anarchy"],
+                 "pron" : []
+            },
+            {
+                 "text" : "theocracy",
+                  "req" : ["!no worship"],
+                "flags" : ["thoecracy"],
+                "pron"  : ["archbishopic of #name"]
+            },
+            {
+                 "text" : "democracy",
+                  "req" : [],
+                "flags" : ["democracy"],
+                "pron"  : ["republic of #name", "#name federation", "#name confederation"]
+            }
+        ],
+        governmentsProb : [ 3, 3]
+    }
 }

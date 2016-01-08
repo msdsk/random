@@ -1,6 +1,64 @@
 /*
 /\/\---------------------------------------------------------------------/\/\
 
+\/\/------------------------------CYWILIZACJE----------------------------\/\/
+*/
+
+function Civ(seed, pol){
+    var civ = this;
+    civ.seed = seed;
+    civ.pol = pol;
+    civ.setting = pol.setting;
+    civ.pop = 0;
+    civ.name = "";
+    
+    function init() {
+        var perc = randomNorm(seed + 1, 3, 100, 3); //let's determine number of people living in this civilization
+        civ.pop = Math.round(perc * civ.setting.pop / 100);
+        civ.name = nameGen(civ.seed+2, civ.setting.data.names);
+    }
+    init();
+    
+    return civ;
+}
+
+function Politics(seed, setting){
+	var pol = this;
+	pol.seed = seed;
+	pol.setting = setting;
+	pol.string = ``;
+	pol.flags = {};
+	pol.perks = {
+		data : [],
+		text : ""
+	};
+    pol.civs = [];
+	pol.relations = {};
+    pol.dominantGovType = "";
+	
+	function init(){
+		/*for(var key in pol.setting.flags){ //let's push global flags into politics flags
+			if(pol.setting.flags.hasOwnProperty(key) && pol.setting.flags[key] === true){
+				pol.flags["world-" + key] = true;
+			}
+		}
+        console.log(pol.flags);*/
+        var peopleLeft = pol.setting.pop,
+            no = 0;
+        while(peopleLeft > 0){
+            var civ = new Civ(seed + no + .3, pol)
+            pol.civs.push(civ);
+            peopleLeft -= civ.pop;
+            no ++;
+        }
+	}
+	init();
+    return pol;
+}
+
+/*
+/\/\------------------------------CYWILIZACJE----------------------------/\/\
+
 \/\/---------------------------------RASY--------------------------------\/\/
 */
 
@@ -27,10 +85,9 @@ function Race(races, seed){ //details for a single race
 		re.data = re.races.data.procedural;
 		re.name = nameGen(re.seed+.5, re.setting.data.names);
 		re.type = probRoll(re.data.type.val, re.data.type.prob, re.seed+.5);
-		re.nameStr = `<div>${re.type.val.text} race <b>${re.name}</b>,`
+		re.nameStr = `<div id="gd-${re.seed}">${re.type.val.text} race <b>${re.name}</b>,`
 		re.perks.data.push.apply(re.perks.data, perksRoll(re.seed + .77, re.data[re.type.val.flags[0]+"Perks"], re.flags, random(re.seed * 3.5 + 3, 1, 3)));
 		re.perks.data.push.apply(re.perks.data, perksRoll(re.seed + .77, re.races.data.common, re.flags, random(re.seed * 3.5 + 3, 1, 3)));
-		re.perks.text = perksText(re.perks.data);
 	}
 	
 	function knownRace(){ //creating a race with a well-known properties
@@ -43,13 +100,10 @@ function Race(races, seed){ //details for a single race
 			re.name = re.type.val.text;
 			re.races.flags[re.type.val.flags[0]] = true;
 		}
-		re.nameStr = `<div><b>${re.name}</b>,` 
+		re.nameStr = `<div id="gd-${re.seed}"><b>${re.name}</b>,` 
 		
 		re.perks.data.push.apply(re.perks.data, perksRoll(re.seed + .77, re.data[re.type.val.flags[0]+"Perks"], re.flags, random(re.seed * 3.5 + 3, 1, 3)));
 		re.perks.data.push.apply(re.perks.data, perksRoll(re.seed + .77, re.races.data.common, re.flags, random(re.seed * 3.5 + 3, 1, 3)));
-		re.perks.text = perksText(re.perks.data);
-		
-		console.log(re.perks.data);
 	}
 	
 	function init(){
@@ -65,9 +119,7 @@ function Race(races, seed){ //details for a single race
 		
 		
 		re.percentage = Math.round(randomNorm(re.seed * 10 + 1, 1, 100, 1.5) * re.races.perc)/100; //first, we need to check what part of alien population this race takes
-		console.log(re.races.perc, re.percentage);
 		re.percentage = re.percentage < re.races.currPerc ? re.percentage : re.races.currPerc;
-		console.log(re.percentage);
 		re.races.currPerc -= re.percentage;
 		if(re.percentage < 5){
 			re.flags["rare"] = true;
@@ -76,8 +128,23 @@ function Race(races, seed){ //details for a single race
 			re.flags["numerous"] = true;
 		}
 		
+		var raceGod = re.setting.flags["no gods"] ? null : random(re.seed * 10 + 2, 0, 3); //maybe this race has a patron god?
+		switch(raceGod){
+			case 0: //oh, it does!
+				re.flags["own god"] = true;
+				var possibleGods = re.setting.gods.gods.concat(re.setting.gods.false); //they could worship a false god though
+				re.god = possibleGods[ random(re.seed * 10 + 2.5, 0, possibleGods.length - 1)];
+				re.perks.data.push({text:`<a href="#gd-${re.god.seed}"><label for="gd-${re.god.seed}-det">${re.god.name}</label></a> is their god`})
+				break;
+			case null:
+			default:
+				break;
+		}
+		
+		re.perks.text = perksText(re.perks.data);
+		
 		re.string += `${re.nameStr} with population of ${Math.round(re.percentage*re.setting.pop/10e5)/100} milion.
-<input type="checkbox" class="more-switch" id="gd-${re.seed}"><label for="gd-${re.seed}"><a class="more-text"></a></label>
+<input type="checkbox" class="more-switch" id="gd-${re.seed}-det"><label for="gd-${re.seed}-det"><a class="more-text"></a></label>
 <div class="more">${re.perks.text}</div>
 </div>`
 		re.races.string += re.string;	
@@ -121,7 +188,7 @@ function Races(seed, setting) { //creating races
 	})()
 	rc.currPerc = rc.perc;
 	
-	if( rc.perc !== 0) { //let's generate existing races
+	if(rc.perc !== 0) { //let's generate existing races
 		var i = 1;
 		while(rc.currPerc > 0 && i < 5) {
 			rc.races.push(new Race(rc, seed * 10 + i/10));
@@ -179,11 +246,11 @@ function Pantheon(seed, setting) { //generating gods
 			gd.perks.text = perksText(gd.perks.data, {"#nom" : gd.pron.nom, "#poss" : gd.pron.poss});
 
 			if(!falseGod){
-				gd.string = `<div>There is a single ${gd.pron.nom === "she"? "goddes" : "god"} named <b>${gd.name}. </b>`;
+				gd.string = `<div id="gd-${gd.seed}">There is a single ${gd.pron.nom === "she"? "goddes" : "god"} named <b>${gd.name}. </b>`;
 			} else {
 				gd.string = `<div><b>${gd.name},</b> a monotheistic ${gd.pron.nom === "she"? "goddes" : "god"}. `
 			}
-			gd.string += `<input type="checkbox" class="more-switch" id="gd-${gd.seed}"><label for="gd-${gd.seed}"><a class="more-text"></a></label>
+			gd.string += `<input type="checkbox" class="more-switch" id="gd-${gd.seed}-det"><label for="gd-${gd.seed}-det"><a class="more-text"></a></label>
 	<div class="more">${gd.perks.text}</div></div>`
 			gd.pantheon.string += gd.string;
 		}
@@ -229,7 +296,7 @@ function Pantheon(seed, setting) { //generating gods
 			gd.flags[gd.domain] = true;
 			
 			gd.evil = (function(){ //evil gods may be fun, but they shouldn't appear too often
-				if(random(gd.seed*3+1, 0, 3) === 0){
+				if(random(gd.seed*3+1, 0, 3) === 0 || gd.flags["darkness"] || gd.flags["chaos"]){
 					gd.flags["evil"] = true;
 					gd.perks.data.push({text:"#nom is evil"})
 					gd.pantheon.flags["evil gods"] = true;
@@ -247,8 +314,8 @@ function Pantheon(seed, setting) { //generating gods
 		}
 		init();
 		
-		gd.string = `<div><b>${gd.name},</b> ${gd.pron.nom === "she"? "goddes" : "god"} of ${gd.domain.val.text}. 
-<input type="checkbox" class="more-switch" id="gd-${gd.seed}"><label for="gd-${gd.seed}"><a class="more-text"></a></label>
+		gd.string = `<div id="gd-${gd.seed}"><b>${gd.name},</b> ${gd.pron.nom === "she"? "goddes" : "god"} of ${gd.domain.val.text}. 
+<input type="checkbox" class="more-switch" id="gd-${gd.seed}-det"><label for="gd-${gd.seed}-det"><a class="more-text"></a></label>
 <div class="more">${gd.perks.text}</div></div>`;
 		gd.pantheon.string += gd.string;
 		return gd;
@@ -280,7 +347,7 @@ function Pantheon(seed, setting) { //generating gods
 			case 0:
 				i = 0;
 				pt.flags["no gods"] = true;
-				pt.string = `<p>There are no gods.</p>`
+				pt.string = `<p><strong>There are no gods.</strong></p>`
 				break;
 			case 1:
 				i = 1;
@@ -291,14 +358,14 @@ function Pantheon(seed, setting) { //generating gods
 			case 3:
 				i = random((pt.seed * pt.p + 1), 2, 6);
 				pt.flags["small pantheon"] = true;
-				pt.string = `<p>There are ${i} gods.</p>`;
+				pt.string = `<p><strong>There are ${i} gods:</strong></p>`;
 				for(i; i>0; i--){
 					pt.gods.push(new PoliGod(pt.seed*pt.p + i, pt));
 				}
 				break;
 			default:
 				i = random((pt.seed * pt.p + 1), 2, 6);
-				pt.string = `<p>There are countless gods, and amongs them there are ${i} major ones:</p>`;
+				pt.string = `<p><strong>There are countless gods, and amongs them there are ${i} major ones:</strong></p>`;
 				pt.flags["large pantheon"] = true;
 				for(i; i>0; i--){
 					pt.gods.push(new PoliGod(pt.seed*pt.p + i, pt));
@@ -314,7 +381,7 @@ function Pantheon(seed, setting) { //generating gods
 		if((f > 0 && pt.num === 0) || (f === 0 && pt.num > 0)){ //false god appear more often when there are no real gods
 			pt.perks.data.push({text:"false gods"});
 			pt.flags["false gods"] = true;
-			pt.string += `<p><strong class="divider">People also worship false gods:</strong></p>`
+			pt.string += `<strong>People also worship false gods:</strong>`
 			var i = 0, ii = random(pt.seed*pt.p*2, 1, (6 - Math.floor(pt.num / 2)));
 			for(i; i<ii; i++){
 				if(random(pt.seed*pt.p*2+i, 0, 3) > 0 && ii !== 1){
@@ -366,7 +433,7 @@ function Setting(seed) {
 		text : ""
 	};
 	st.races = {};
-	st.civs = [];
+	st.pol = {};
 	
 	st.init = function () { //let's get down to business and generate the setting
 		var roll;
@@ -408,7 +475,7 @@ function Setting(seed) {
 			}
 		})()
 		
-		if(st.daylength > 80 || !st.flags["extreme weather"]){
+		if(st.daylength > 80 && !st.flags["extreme weather"]){
 			st.flags["extreme weather"] = true;
 			st.perks.data.push({text : "this world is ravaged by extreme weather due to a very long day"});
 		}
@@ -426,7 +493,9 @@ function Setting(seed) {
 			st.perks.data.push({text : "most of this world is a snowy desert, too cold for humans to live in"});
 		}
 		
-		st.perks.data.push.apply(st.perks.data, perksRoll(st.seed*st.p + 4, st.data.perks, st.flags, random(seed * st.p + 4.5, 2, 7))) //all curious perks
+		st.gods = new Pantheon(st.seed * st.p + 6, st); //let's roll gods before perks, they don't care for the world but the world cares for them
+		
+		st.perks.data.push.apply(st.perks.data, perksRoll(st.seed*st.p + 4, st.data.perks, st.flags, random(seed * st.p + 4.5, 4, 9))) //all curious perks
 		st.perks.text = perksText(st.perks.data)
 		
 		st.pop = (function(){
@@ -439,17 +508,9 @@ function Setting(seed) {
 			if(roll > .85 * popProb[1]){
 				st.flags["overpopulated"]
 			}
-			/*if(st.flags["fertile"]){ //all the shit that may drastically change population
-				console.log("a!")
-				pop = pop * 2
-			}
-			if(st.flags["infertile"] || st.flags["long war"] || st.flags["plague"]){
-				pop = pop * .5;
-			}
-			if(st.flags["postapoc"]){
-				pop = pop * Math.round(random(seed * st.p + 5.5, 1, 3)/10+1);
-			}*/
-			var popLow = ["infertile", "long war", "post apoc", "plague", "extreme weather", "dry", "cold", "hot"],
+			
+			//now, let's modify population depending on flags
+			var popLow = ["infertile", "long war", "postapo", "plague", "extreme weather", "dry", "cold", "hot"],
 				popHigh = ["fertile", "peace"],
 				popMod = 0;
 			popLow.forEach(function(el){
@@ -467,13 +528,12 @@ function Setting(seed) {
 			return pop;
 		})()
 		
-		st.gods = new Pantheon(st.seed * st.p + 6, st);
-		
 		st.races = new Races(st.seed * st.p + 7, st);
+		st.pol = new Politics(st.seed * st.p + 8, st);
 		
-		/* TESKT TO WYPISANIA ----------------------------------------------------------------------------------------------------------------------------*/
+		/* TESKT DO WYPISANIA ----------------------------------------------------------------------------------------------------------------------------*/
 		st.string = `<h1>The world of ${st.name}</h1><section><h2>Basic data</h2><p>This world's technological level is that of ${st.tech.text} and ${st.magic.text}.</p>
-<p>The planet's surface ${st.size} mln km² (${Math.round(st.size/510*100)/100} area of Earth), with land taking ${st.land}% of it. Its day lasts ${st.dayLength} hours.</p>
+<p>The planet's surface is ${st.size} mln km² (${Math.round(st.size/510*100)/100} area of Earth), with land taking ${st.land}% of it. Its day lasts ${st.dayLength} hours.</p>
 <p>The average temperature is ${st.temperature}°C (${
 		(function(){
 			if(15 - st.temperature === 0){
@@ -496,6 +556,10 @@ ${st.gods.string}
 <section>
 <h2>Races</h2>
 ${st.races.string}
+</section>
+<section>
+<h2>Civilizations</h2>
+${st.pol.string}
 </section>
 <section>
 <h2>World's traits:</h2>
@@ -552,6 +616,6 @@ Promise.all([ajax("json/setting.json", "json"), ajax("json/names.json", "json")]
 		})
 	})
 	.catch(function(err) {
-		window.alert("Whoops, something went very wrong. I bet it's your fault.")
 		console.log("rollbox error: ", err);
+		window.alert("Whoops, something went very wrong. I bet it's your fault.\nYou monster.");
 	})

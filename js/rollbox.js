@@ -23,7 +23,7 @@ function random(seed, min, max) {
 }
 
 function randomNorm(seed, min, max, skew){
-	var x = (random(seed) - random(seed + 1) + 1)/2;
+	var x = (random(seed) - random(seed + 1) + 1)/2; //the bigger skew the smaller average
 	if(typeof skew === "number"){
 		x = Math.pow(x, skew);
 	}
@@ -55,7 +55,8 @@ function perksText(perks, replace){ //turning text from perks object into a nice
 	for (i; i<ii; i++){
 		var txt = perks[i].text;
 		if (replace) for (var key in replace) {
-			txt = txt.replace(key, replace[key]);
+			var reg= new RegExp(key, "g");
+			txt = txt.replace(reg, replace[key]);
 		}
 		perskstring += txt + "<br>"
 	}
@@ -103,6 +104,7 @@ function perksRoll(seed, data, flags, times){
 	var perksArr = [];
 	for(i=0; i<times; i++){
 		if(data.length < 1){
+			window.alert("Whoops, something went very wrong. I bet it's your fault.\nYou monster.\n(Actually we've just tried to roll more than we have data for; try another seed and it should work)");
 			var err = Error("too much perks, too little data");
 			console.log(err.stack);
 			throw err;
@@ -169,7 +171,7 @@ function probRoll(resArr, probArr, seed){
 
 function nameGen(seed, nameTable){
 	var nameArray = nameTable;
-	var vowels = "aioueAIOUE", diphthongs = ["ch"];
+	var vowels = "aioueyAIOUEY", diphthongs = ["ch", "th"];
 	var newName = "";
 	var syllabeNo = 0;
 	
@@ -223,7 +225,7 @@ function nameGen(seed, nameTable){
 		if(vowels.indexOf(letter[0]) > -1){
 			syllabesArr.unshift(co + vo + start);
 		} else {
-			syllabesArr[0] = (lastVowelIndex !== 0 ? (toSyllabize.slice(0, ii - lastVowelIndex)) : "") + start + syllabesArr[0];
+			syllabesArr[0] = (lastVowelIndex !== 0 /*&& syllabesArr.length > 1*/ ? (toSyllabize.slice(0, ii - lastVowelIndex)) : "") + start + syllabesArr[0];
 		}
 		return syllabesArr;
 	}
