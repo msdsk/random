@@ -45,7 +45,7 @@ function Civ(seed, pol){
 					}
 					var race = civ.pol.racesPop[name];
 					if((race.popLeft > 0) && ( (random(civ.seed+3+i/10, 0, (racesCount + 2)) === 0) || civ.races[name] )){ //they're gonna be mostly rather specist states
-						var racePop = Math.round(randomNorm(civ.seed+3.5+i/10, 10, 1000, race.pop/1e8)/1000 * race.pop);
+						var racePop = Math.round(randomNorm(civ.seed+3.5+i/10, 10, 1000, .3)/1000 * race.pop);
 						racePop = racePop > race.popLeft ? race.popLeft : racePop;
 
 						racesCount++;
@@ -277,7 +277,7 @@ function Race(races, seed){ //details for a single race
 		
 		re.perks.text = perksText(re.perks.data);
 		
-		re.string += `${re.nameStr} with population of ${readableNumber(re.pop)} milion.
+		re.string += `${re.nameStr} with population of ${readableNumber(re.pop)}.
 <input type="checkbox" class="more-switch" id="rc-${re.seed}-det"><label for="rc-${re.seed}-det"><a class="more-text"></a></label>
 <div class="more">${re.perks.text}</div>
 </div>`
@@ -723,7 +723,7 @@ function touchUp(){
 //all the stuff that happens before actually generating the content
 var seedInput = document.getElementById("seed"),
 	settingButton = document.getElementById("settingButton");
-seedInput.value = /*Math.floor(Math.random()*10000)*/0; //DEBUG!
+seedInput.value = Math.floor(Math.random()*10000); //DEBUG!
 
 var set
 
@@ -756,5 +756,5 @@ Promise.all([ajax("json/setting.json", "json"), ajax("json/names.json", "json")]
 	})
 	.catch(function(err) {
 		console.log("rollbox error: ", err);
-		window.alert("Whoops, something went very wrong. I bet it's your fault.\nYou monster.");
+		console.error("Whoops, something went very wrong. I bet it's your fault.\nYou monster.");
 	})
