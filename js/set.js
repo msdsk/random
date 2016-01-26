@@ -9,14 +9,70 @@ function Civ(seed, pol){
     civ.seed = seed;
     civ.pol = pol;
     civ.setting = pol.setting;
+	civ.flags = {};
+	civ.perks = {
+		data : [],
+		text : ""
+	};
     civ.pop = 0;
+	civ.alienPop = 0;
+	civ.humanPop = 0;
     civ.name = "";
+	civ.races = {};
+	civ.mainRace = "";
     
     function init() {
-        var perc = randomNorm(seed + 1, 3, 100, 3); //let's determine number of people living in this civilization
-        civ.pop = Math.round(perc * civ.setting.pop / 100);
+		
         civ.name = nameGen(civ.seed+2, civ.setting.data.names);
-    }
+		
+		function generatePopulation(){
+			var i = 0;
+			function addAlienRaces(){ //let's add alien population
+				var racesCount = 0;
+				for(var name in civ.pol.racesPop){
+					var race = civ.pol.racesPop[name];
+					if((race.popLeft > 0) && ( (random(civ.seed+3+i/10, 0, (racesCount + 2)) === 0) || civ.races[name] )){ //they're gonna be mostly rather specist states
+						var racePop = Math.round(randomNorm(civ.seed+3.5+i/10, 10, 1000, race.pop/1e8)/1000 * race.pop);
+						racePop = racePop > race.popLeft ? race.popLeft : racePop;
+
+						racesCount++;
+						race.popLeft -= racePop;
+						civ.races[name] = racePop;
+						civ.alienPop += racePop;
+						
+						if(racePop > civ.races[civ.mainRace] || !civ.races[civ.mainRace]){ //let's check if they are a new main race
+							civ.mainRace = name;
+						}
+						
+					}
+					i++;
+				}
+			}
+			addAlienRaces()
+
+			if(civ.pol.humanPopLeft > 0 && ( (random(civ.seed+3+i/10, 0, 2) === 0) || civ.alienPop === 0) ){ //let's add human population; rarely they will coexist with aliens, we want ranther specist societies
+				var humanPop = Math.round(randomNorm(civ.seed+3.5+i/10, 10, 800, 3)/1000 * civ.setting.races.humanPop);
+				humanPop = humanPop > civ.pol.humanPopLeft ? civ.pol.humanPopLeft : humanPop;
+
+				civ.pol.humanPopLeft -= humanPop;
+				civ.humanPop = humanPop;
+			}
+
+			while(civ.humanPop === 0 && civ.alienPop === 0){ //sometimes there's no humans left, bu there are still aliens to use up
+				addAlienRaces();
+			}
+
+			civ.pop = civ.humanPop + civ.alienPop;
+			if(civ.alienPop < civ.humanPop * 0.7){
+				civ.flags["minorities"] = true;
+			}
+			if(civ.alienPop > civ.humanPop){
+				civ.flags["alien civilization"] = true;
+			}
+		}
+		generatePopulation();
+		
+    }	
     init();
     
     return civ;
@@ -34,25 +90,44 @@ function Politics(seed, setting){
 	};
     pol.civs = [];
 	pol.relations = {};
-    pol.dominantGovType = "";
+	pol.humanPopLeft = pol.setting.races.humanPop * random(seed+1, .5, .8); //only a part of humans will live in major civilizations
+	pol.racesPop = {};
+	pol.perc = 0;
 	
 	function init(){
-		/*for(var key in pol.setting.flags){ //let's push global flags into politics flags
+		
+		//let's create a list of races in the setting and how many of their pops we can use for civs
+		pol.setting.races.races.forEach(function(race){
+			pol.racesPop[race.name] = {};
+			pol.racesPop[race.name].popLeft = pol.racesPop[race.name].pop =  race.pop;
+		})
+		console.log(pol.racesPop);
+		
+		for(var key in pol.setting.flags){ //let's push global flags into politics flags <---- we probably should do it, right? 
 			if(pol.setting.flags.hasOwnProperty(key) && pol.setting.flags[key] === true){
 				pol.flags["world-" + key] = true;
 			}
 		}
-        console.log(pol.flags);*/
-        var peopleLeft = pol.setting.pop,
+        pol.perc = random(seed+2, .5, .8);
+		var peopleLeft = Math.round(pol.setting.pop * pol.perc), //only a part of people will live in major civilizations
             no = 0;
+		
+		if(peopleLeft > pol.humanPopLeft + pol.setting.races.perc * pol.setting.pop){
+			peopleLeft = pol.humanPopLeft + pol.setting.races.perc * pol.setting.pop * pol.perc;
+			pol.perc = peopleLeft/pol.setting.pop;
+		}
+		
         while(peopleLeft > 0){
-            var civ = new Civ(seed + no + .3, pol)
+            var civ = new Civ(seed*10 + no, pol)
             pol.civs.push(civ);
             peopleLeft -= civ.pop;
             no ++;
         }
 	}
 	init();
+	
+	pol.string = `<p>There are ${pol.civs.length} major civilizations, making up ${Math.round(pol.perc*1e4)/100}% of the world's population.</p>`;
+	
     return pol;
 }
 
@@ -69,11 +144,12 @@ function Race(races, seed){ //details for a single race
 	re.setting = races.setting;
 	re.string = "";
 	re.percentage = 0;
+	re.pop = 0;
 	re.name = "";
 	re.flags = {};
 	for(var key in re.races.flags){
 		if(re.races.flags.hasOwnProperty(key) && re.races.flags[key] === true){
-			re.flags[key] = true;
+			re.flags[key] = true; //??? WHY, why won't I just reference a passed object?
 		}
 	}
 	re.perks = {
@@ -120,7 +196,8 @@ function Race(races, seed){ //details for a single race
 		
 		re.percentage = Math.round(randomNorm(re.seed * 10 + 1, 1, 100, 1.5) * re.races.perc)/100; //first, we need to check what part of alien population this race takes
 		re.percentage = re.percentage < re.races.currPerc ? re.percentage : re.races.currPerc;
-		re.races.currPerc -= re.percentage;
+		re.pop = Math.round(re.percentage * re.setting.pop / 100);
+		re.races.currPerc -= re.percentage; //let's detract this population from the overall alien population
 		if(re.percentage < 5){
 			re.flags["rare"] = true;
 		}
@@ -143,7 +220,7 @@ function Race(races, seed){ //details for a single race
 		
 		re.perks.text = perksText(re.perks.data);
 		
-		re.string += `${re.nameStr} with population of ${Math.round(re.percentage*re.setting.pop/10e5)/100} milion.
+		re.string += `${re.nameStr} with population of ${Math.round(re.pop/10e3)/100} milion.
 <input type="checkbox" class="more-switch" id="gd-${re.seed}-det"><label for="gd-${re.seed}-det"><a class="more-text"></a></label>
 <div class="more">${re.perks.text}</div>
 </div>`
@@ -160,12 +237,13 @@ function Races(seed, setting) { //creating races
 	rc.seed = seed;
 	rc.setting = setting;
 	rc.data = rc.setting.data.races;
+	rc.humanPop;
 	rc.string = "";
 	rc.numText = "";
 	rc.flags = {};
 	
 	for(var key in rc.setting.flags){
-		if(rc.setting.flags.hasOwnProperty(key) && rc.setting.flags[key] === true){
+		if(rc.setting.flags.hasOwnProperty(key) && rc.setting.flags[key] === true) {
 			rc.flags["world-" + key] = true;
 		}
 	}
@@ -187,6 +265,7 @@ function Races(seed, setting) { //creating races
 		}
 	})()
 	rc.currPerc = rc.perc;
+	rc.humanPop = Math.round(rc.setting.pop * (1 - rc.perc/100));
 	
 	if(rc.perc !== 0) { //let's generate existing races
 		var i = 1;
@@ -340,6 +419,7 @@ function Pantheon(seed, setting) { //generating gods
 		data : [],
 		text : ""
 	};
+	
 	pt.num = (function(){ //generating real gods ----------------------------------------------------------
 		var t = random(pt.seed, 0, 5),
 			i = 0;
@@ -347,7 +427,7 @@ function Pantheon(seed, setting) { //generating gods
 			case 0:
 				i = 0;
 				pt.flags["no gods"] = true;
-				pt.string = `<p><strong>There are no gods.</strong></p>`
+				pt.string = `<h3>There are no gods.</h3>`
 				break;
 			case 1:
 				i = 1;
@@ -358,14 +438,14 @@ function Pantheon(seed, setting) { //generating gods
 			case 3:
 				i = random((pt.seed * pt.p + 1), 2, 6);
 				pt.flags["small pantheon"] = true;
-				pt.string = `<p><strong>There are ${i} gods:</strong></p>`;
+				pt.string = `<h3>There are ${i} gods:</h3>`;
 				for(i; i>0; i--){
 					pt.gods.push(new PoliGod(pt.seed*pt.p + i, pt));
 				}
 				break;
 			default:
 				i = random((pt.seed * pt.p + 1), 2, 6);
-				pt.string = `<p><strong>There are countless gods, and amongs them there are ${i} major ones:</strong></p>`;
+				pt.string = `<h3>There are countless gods, and amongs them there are ${i} major ones:</h3>`;
 				pt.flags["large pantheon"] = true;
 				for(i; i>0; i--){
 					pt.gods.push(new PoliGod(pt.seed*pt.p + i, pt));
@@ -381,7 +461,7 @@ function Pantheon(seed, setting) { //generating gods
 		if((f > 0 && pt.num === 0) || (f === 0 && pt.num > 0)){ //false god appear more often when there are no real gods
 			pt.perks.data.push({text:"false gods"});
 			pt.flags["false gods"] = true;
-			pt.string += `<strong>People also worship false gods:</strong>`
+			pt.string += `<h3>People also worship false gods:</h3>`
 			var i = 0, ii = random(pt.seed*pt.p*2, 1, (6 - Math.floor(pt.num / 2)));
 			for(i; i<ii; i++){
 				if(random(pt.seed*pt.p*2+i, 0, 3) > 0 && ii !== 1){
@@ -452,11 +532,11 @@ function Setting(seed) {
 		st.size = randomNorm((st.seed * st.p + 3), 100, 1500, 1.3); //planet's size in mln km^2
 		st.land = randomNorm((st.seed * st.p * 10 + 30 + 1), 10, 95, 2); //land percentage
 		if(st.land < 10){
-			st.perks.data.push({text : "this world is nothing more but small chains of islands on an endless ocean"});
+			st.perks.data.push({text : "This world is nothing more but small chains of islands on an endless ocean"});
 			st.flags["water world"] = true;
 		}
 		if(st.land > 70){
-			st.perks.data.push({text : "this world is a single supercontinent ravaged by extreme weather"});
+			st.perks.data.push({text : "This world is a single supercontinent ravaged by extreme weather"});
 			st.flags["dry"] = true;
 			st.flags["extreme weather"] = true;
 			st.flags["supercontinent"] = true;
@@ -477,20 +557,20 @@ function Setting(seed) {
 		
 		if(st.daylength > 80 && !st.flags["extreme weather"]){
 			st.flags["extreme weather"] = true;
-			st.perks.data.push({text : "this world is ravaged by extreme weather due to a very long day"});
+			st.perks.data.push({text : "This world is ravaged by extreme weather due to a very long day"});
 		}
 		st.temperature = randomNorm((st.seed * st.p * 10 + 30 + 2), 8, 21);
 		if(st.temperature > 18){
 			st.flags["infertile"] = true;
 			st.flags["dry"] = true;
 			st.flags["hot"] = true;
-			st.perks.data.push({text : "most of this world is a desert, too hot for humans to live in"});
+			st.perks.data.push({text : "Most of this world is a desert, too hot for humans to live in"});
 		}
 		if(st.temperature < 10){
 			st.flags["infertile"] = true;
 			st.flags["cold"] = true;
 			st.flags["dry"] = true;
-			st.perks.data.push({text : "most of this world is a snowy desert, too cold for humans to live in"});
+			st.perks.data.push({text : "Most of this world is a snowy desert, too cold for humans to live in"});
 		}
 		
 		st.gods = new Pantheon(st.seed * st.p + 6, st); //let's roll gods before perks, they don't care for the world but the world cares for them
@@ -536,7 +616,7 @@ function Setting(seed) {
 <p>The planet's surface is ${st.size} mln km² (${Math.round(st.size/510*100)/100} area of Earth), with land taking ${st.land}% of it. Its day lasts ${st.dayLength} hours.</p>
 <p>The average temperature is ${st.temperature}°C (${
 		(function(){
-			if(15 - st.temperature === 0){
+			if(st.temperature === 15){
 					return "same as on Earth";
 			}
 			if(15 - st.temperature > 0){
@@ -584,7 +664,7 @@ function touchUp(){
 //all the stuff that happens before actually generating the content
 var seedInput = document.getElementById("seed"),
 	settingButton = document.getElementById("settingButton");
-seedInput.value = Math.floor(Math.random()*10000);
+seedInput.value = /*Math.floor(Math.random()*10000); */ 4 //DEBUG ------------------------------------------------------------------
 
 var set
 
@@ -593,14 +673,14 @@ function generate(d){
 		set = JSON.parse(JSON.stringify(d[0]));
 		set.names = JSON.parse(JSON.stringify(d[1]));
 		var seed = parseInt(seedInput.value) 
-		seed = seed ? seed : Math.floor(Math.random()*10000);
+		seed = (seed !== "") ? seed : Math.floor(Math.random()*10000);
 		if(seed > 10000000){
 			seed = Math.random()*10000;
 			window.alert("The seed was too big for us to handle, so you got something random. Sorry!")
 			return 0;
 		}
 		console.log(set);
-		setting = new Setting(parseInt(seedInput.value));
+		setting = new Setting(seed);
 		settingButton.removeAttribute("disabled");
 		console.log(setting);
 		touchUp();

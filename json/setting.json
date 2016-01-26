@@ -1,12 +1,12 @@
 {
 	"technology" : {
 		"val" : [
-			{"text":"stone age", "flags":["low tech", "prehistoric"]}, 
+			{"text":"stone age", "flags":["prehistoric", "low tech"]}, 
 			{"text":"bronze age", "flags":["low tech"]}, 
 			{"text":"antiquity", "flags":["low tech"]}, 
 			{"text":"middle ages", "flags":["low tech"]}, 
 			{"text":"renaissance", "flags":["mid tech"]}, 
-			{"text":"enlightment", "flags":["social changes", "mid tech"]}, 
+			{"text":"enlightment", "flags":["mid tech", "social changes"]}, 
 			{"text":"industrial revolution", "flags":["early industrial"]}, 
 			{"text":"early 20th century", "flags":["modern tech", "high tech"]},
 			{"text":"contemporary times", "flags":["modern tech", "information revolution", "high tech"]}, 
@@ -146,6 +146,16 @@
 			 "text" : "Much of transportation is done via portals",
 			  "req" : ["high magic", "|futuristic"],
 			"flags" : ["portals"]
+		},
+		{
+			 "text" : "People used to worship gods. They are too afraid now.",
+			  "req" : ["no worship"],
+			"flags" : []
+		},
+		{
+			 "text" : "Mortals have killed the gods who used to rule them",
+			  "req" : ["no worship"],
+			"flags" : []
 		},
 		{
 			 "text" : "The world is heavily polluted",
@@ -1223,7 +1233,7 @@
 		]
 	},
     "civs" : {
-        governments : [
+        "governments" : [
             {
                  "text" : "anarchy",
                   "req" : [],
@@ -1237,12 +1247,111 @@
                 "pron"  : ["archbishopic of #name"]
             },
             {
+                 "text" : "magocracy",
+                  "req" : ["!no worship"],
+                "flags" : ["thoecracy"],
+                "pron"  : ["archbishopic of #name"]
+            },
+            {
                  "text" : "democracy",
                   "req" : [],
                 "flags" : ["democracy"],
                 "pron"  : ["republic of #name", "#name federation", "#name confederation"]
+            },
+            {
+                 "text" : "presidential dictatorship",
+                  "req" : [],
+                "flags" : [],
+                "pron"  : []
+            },
+            {
+                 "text" : "facist dictatorship",
+                  "req" : [],
+                "flags" : [],
+                "pron"  : []
+            },
+            {
+                 "text" : "communist state",
+                  "req" : [],
+                "flags" : [],
+                "pron"  : []
+            },
+            {
+                 "text" : "absolute monarchy",
+                  "req" : [],
+                "flags" : [],
+                "pron"  : []
+            },
+            {
+                 "text" : "feudal monarchy",
+                  "req" : [],
+                "flags" : [],
+                "pron"  : []
+            },
+            {
+                 "text" : "tribal democracy",
+                  "req" : [],
+                "flags" : [],
+                "pron"  : []
+            },
+            {
+                 "text" : "hivemind",
+                  "req" : [],
+                "flags" : [],
+                "pron"  : []
+            },
+            {
+                 "text" : "anarchosyndicalist commune",
+                  "req" : [],
+                "flags" : [],
+                "pron"  : []
+            },
+            {
+                 "text" : "ancap state",
+                  "req" : [],
+                "flags" : [],
+                "pron"  : []
+            },
+            {
+                 "text" : "technocracy",
+                  "req" : [],
+                "flags" : [],
+                "pron"  : []
             }
         ],
-        governmentsProb : [ 3, 3]
+        "governmentsProb" : {
+			"prehistoric" : [2, 8, 8, 1, 0, -10, -10, 5, 3, 12, 0, 0, 0, 0],
+			   "low tech" : [2, 8, 7, 4, 1, -10, -10, 8, 12, 6, 0, 1, 0, 0],
+			   "mid tech" : [1, 6, 5, 5, 2, -10, -10, 14, 7, 3, 0, 0, 0, 1],
+	   "early industrial" : [1, 5, 4, 10, 3, -7, -7, 9, 2, 2, 0, 1, 1, 2],
+	   		"modern tech" : [1, 5, 2, 14, 5, 1, 1, 2, 1, 1, 0, 1, 1, 3],
+	   		 "futuristic" : [2, 5, 2, 10, 5, 1, 3, 4, 0, 0, 0, 3, 3, 4]
+		},
+		"governmentsProbMods" : {
+			"world-no gods" : {
+				"1" : -2
+			},
+			"world-no worship" : {
+				"1" : -200
+			},
+			"evil" : {
+				"3" : -2,
+				"5" : 10,
+				"6" : 10,
+				"7" : 3
+			},
+			"small" : {
+				"11" : 1
+			},
+			"world-no magic" : {
+				"2" : -6
+			},
+			"world-rare magic" : {
+				"2" : -4
+			},
+			"world-high magic" : {
+				"2" : 2
+			}
+		}
     }
 }

@@ -123,7 +123,7 @@ function perksRoll(seed, data, flags, times){
 	return perksArr;
 }
 
-function ajax(url, type) {
+function ajax(url, type) { //dzwonimy po dane!
 	if(!type){
 		type = "text";
 	}
@@ -153,7 +153,7 @@ function probRoll(resArr, probArr, seed){
 		throw "No seed to roll on table!"
 	}
 	for(i; i<ii; i++){
-		var prob = cumulativeProbArr[i-1] + probArr[i-1]
+		var prob = cumulativeProbArr[i-1] + (probArr[i-1] > 0 ? probArr[i-1] : 0)
 		cumulativeProbArr.push(prob);
 	}
 	var rand = random(seed, 0, cumulativeProbArr[cumulativeProbArr.length-1]-1),
@@ -171,7 +171,7 @@ function probRoll(resArr, probArr, seed){
 
 function nameGen(seed, nameTable){
 	var nameArray = nameTable;
-	var vowels = "aioueyAIOUEY", diphthongs = ["ch", "th"];
+	var vowels = "aioueyAIOUEY-", diphthongs = ["ch", "th"];
 	var newName = "";
 	var syllabeNo = 0;
 	
