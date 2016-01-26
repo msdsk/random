@@ -7,6 +7,7 @@
 function Civ(seed, pol){
     var civ = this;
     civ.seed = seed;
+	civ.data = pol.data;
     civ.pol = pol;
     civ.setting = pol.setting;
 	civ.flags = {};
@@ -18,10 +19,19 @@ function Civ(seed, pol){
 	civ.alienPop = 0;
 	civ.humanPop = 0;
     civ.name = "";
+    civ.fullName = "";
+	civ.gov = {};
 	civ.races = {};
-	civ.mainRace = "";
+	civ.mainRace = {name:"", id:""};
+	civ.string = "";
     
     function init() {
+		
+		for(var key in civ.pol.flags){ //let's copy general flags 
+			if(civ.pol.flags.hasOwnProperty(key) && civ.pol.flags[key] === true){
+				civ.flags[key] = true;
+			}
+		}
 		
         civ.name = nameGen(civ.seed+2, civ.setting.data.names);
 		
@@ -30,6 +40,9 @@ function Civ(seed, pol){
 			function addAlienRaces(){ //let's add alien population
 				var racesCount = 0;
 				for(var name in civ.pol.racesPop){
+					if(!civ.pol.racesPop.hasOwnProperty(name)){
+						continue;
+					}
 					var race = civ.pol.racesPop[name];
 					if((race.popLeft > 0) && ( (random(civ.seed+3+i/10, 0, (racesCount + 2)) === 0) || civ.races[name] )){ //they're gonna be mostly rather specist states
 						var racePop = Math.round(randomNorm(civ.seed+3.5+i/10, 10, 1000, race.pop/1e8)/1000 * race.pop);
@@ -41,7 +54,7 @@ function Civ(seed, pol){
 						civ.alienPop += racePop;
 						
 						if(racePop > civ.races[civ.mainRace] || !civ.races[civ.mainRace]){ //let's check if they are a new main race
-							civ.mainRace = name;
+							civ.mainRace.name = name;
 						}
 						
 					}
@@ -50,7 +63,7 @@ function Civ(seed, pol){
 			}
 			addAlienRaces()
 
-			if(civ.pol.humanPopLeft > 0 && ( (random(civ.seed+3+i/10, 0, 2) === 0) || civ.alienPop === 0) ){ //let's add human population; rarely they will coexist with aliens, we want ranther specist societies
+			if(civ.pol.humanPopLeft > 0 && ((random(civ.seed+3+i/10, 0, 2) === 0) || civ.alienPop === 0) ){ //let's add human population; rarely they will coexist with aliens, we want ranther specist societies
 				var humanPop = Math.round(randomNorm(civ.seed+3.5+i/10, 10, 800, 3)/1000 * civ.setting.races.humanPop);
 				humanPop = humanPop > civ.pol.humanPopLeft ? civ.pol.humanPopLeft : humanPop;
 
@@ -69,17 +82,54 @@ function Civ(seed, pol){
 			if(civ.alienPop > civ.humanPop){
 				civ.flags["alien civilization"] = true;
 			}
+			
+			var a = 0, aa = civ.setting.races.races.length;
+			for(a; a<aa; a++){
+				if(civ.setting.races.races[a].name === civ.mainRace.name){
+					civ.mainRace.id = civ.setting.races.races[a].seed;
+				}
+			}
+			
 		}
 		generatePopulation();
 		
+		function generateGov(){
+			var probTable = civ.data.governmentsProb[civ.setting.tech.flags[0]];
+			for(var flag in civ.data.governmentsProbMods){ //let's add all modifiers from different flags
+				if(civ.flags[flag]){
+					for(var mod in civ.data.governmentsProbMods[flag]){
+						probTable[parseInt(mod)] += civ.data.governmentsProbMods[flag][mod];
+					}
+				}
+			}
+			civ.gov = probRoll(civ.data.governments, probTable, civ.seed+4);
+			
+			
+			if(civ.gov.val.pron.length > 0 && random(civ.seed + 4.5, 0, 2) === 0){
+				var namePart = probRoll(civ.gov.val.pron, null, civ.seed + 4.6).val;
+				civ.fullName = replacePart(namePart, {"#name" : civ.name})
+			}
+			
+		}
+		generateGov();
+		
     }	
     init();
+	
+	civ.string = `<div><b>${civ.name}</b>, ${civ.gov.val.text} `
+	if(civ.flags["alien civilization"] && civ.races[civ.mainRace.name] !== civ.pop){
+		civ.string += `inhabitated mostly by <a href="#rc-${civ.mainRace.id}">${civ.mainRace.name}</a>, `
+	} else if(civ.flags["alien civilization"]){
+		civ.string += `inhabitated entirely by <a href="#rc-${civ.mainRace.id}">${civ.mainRace.name}</a>, ` 		
+	}
+	civ.string += `with a population of ${readableNumber(civ.pop)}.</div>`
     
     return civ;
 }
 
 function Politics(seed, setting){
 	var pol = this;
+	pol.data = setting.data.civs;
 	pol.seed = seed;
 	pol.setting = setting;
 	pol.string = ``;
@@ -90,7 +140,10 @@ function Politics(seed, setting){
 	};
     pol.civs = [];
 	pol.relations = {};
-	pol.humanPopLeft = pol.setting.races.humanPop * random(seed+1, .5, .8); //only a part of humans will live in major civilizations
+	pol.humanPopLeft = (function(){ //only a part of humans will live in major civilizations
+		var perc = random(seed+1, .5, .8)
+		return Math.round(pol.setting.races.humanPop * perc);
+	})()
 	pol.racesPop = {};
 	pol.perc = 0;
 	
@@ -101,19 +154,19 @@ function Politics(seed, setting){
 			pol.racesPop[race.name] = {};
 			pol.racesPop[race.name].popLeft = pol.racesPop[race.name].pop =  race.pop;
 		})
-		console.log(pol.racesPop);
 		
 		for(var key in pol.setting.flags){ //let's push global flags into politics flags <---- we probably should do it, right? 
 			if(pol.setting.flags.hasOwnProperty(key) && pol.setting.flags[key] === true){
 				pol.flags["world-" + key] = true;
 			}
 		}
+		
         pol.perc = random(seed+2, .5, .8);
 		var peopleLeft = Math.round(pol.setting.pop * pol.perc), //only a part of people will live in major civilizations
             no = 0;
 		
-		if(peopleLeft > pol.humanPopLeft + pol.setting.races.perc * pol.setting.pop){
-			peopleLeft = pol.humanPopLeft + pol.setting.races.perc * pol.setting.pop * pol.perc;
+		if(peopleLeft > pol.humanPopLeft + Math.round(pol.setting.races.perc/100 * pol.setting.pop)){
+			peopleLeft = Math.round(pol.humanPopLeft + (pol.setting.races.perc/100 * pol.setting.pop * pol.perc));
 			pol.perc = peopleLeft/pol.setting.pop;
 		}
 		
@@ -127,6 +180,10 @@ function Politics(seed, setting){
 	init();
 	
 	pol.string = `<p>There are ${pol.civs.length} major civilizations, making up ${Math.round(pol.perc*1e4)/100}% of the world's population.</p>`;
+	pol.civs.forEach(function(civ){
+		pol.string += civ.string;
+	})
+	pol.string += `<b>TO BE DONE!</b>`;
 	
     return pol;
 }
@@ -161,7 +218,7 @@ function Race(races, seed){ //details for a single race
 		re.data = re.races.data.procedural;
 		re.name = nameGen(re.seed+.5, re.setting.data.names);
 		re.type = probRoll(re.data.type.val, re.data.type.prob, re.seed+.5);
-		re.nameStr = `<div id="gd-${re.seed}">${re.type.val.text} race <b>${re.name}</b>,`
+		re.nameStr = `<div id="rc-${re.seed}">${re.type.val.text} race <b>${re.name}</b>,`
 		re.perks.data.push.apply(re.perks.data, perksRoll(re.seed + .77, re.data[re.type.val.flags[0]+"Perks"], re.flags, random(re.seed * 3.5 + 3, 1, 3)));
 		re.perks.data.push.apply(re.perks.data, perksRoll(re.seed + .77, re.races.data.common, re.flags, random(re.seed * 3.5 + 3, 1, 3)));
 	}
@@ -176,7 +233,7 @@ function Race(races, seed){ //details for a single race
 			re.name = re.type.val.text;
 			re.races.flags[re.type.val.flags[0]] = true;
 		}
-		re.nameStr = `<div id="gd-${re.seed}"><b>${re.name}</b>,` 
+		re.nameStr = `<div id="rc-${re.seed}"><b>${re.name}</b>,` 
 		
 		re.perks.data.push.apply(re.perks.data, perksRoll(re.seed + .77, re.data[re.type.val.flags[0]+"Perks"], re.flags, random(re.seed * 3.5 + 3, 1, 3)));
 		re.perks.data.push.apply(re.perks.data, perksRoll(re.seed + .77, re.races.data.common, re.flags, random(re.seed * 3.5 + 3, 1, 3)));
@@ -211,7 +268,7 @@ function Race(races, seed){ //details for a single race
 				re.flags["own god"] = true;
 				var possibleGods = re.setting.gods.gods.concat(re.setting.gods.false); //they could worship a false god though
 				re.god = possibleGods[ random(re.seed * 10 + 2.5, 0, possibleGods.length - 1)];
-				re.perks.data.push({text:`<a href="#gd-${re.god.seed}"><label for="gd-${re.god.seed}-det">${re.god.name}</label></a> is their god`})
+				re.perks.data.push({text:`<a href="#gd-${re.god.seed}">${re.god.name}</a> is their god`})
 				break;
 			case null:
 			default:
@@ -220,8 +277,8 @@ function Race(races, seed){ //details for a single race
 		
 		re.perks.text = perksText(re.perks.data);
 		
-		re.string += `${re.nameStr} with population of ${Math.round(re.pop/10e3)/100} milion.
-<input type="checkbox" class="more-switch" id="gd-${re.seed}-det"><label for="gd-${re.seed}-det"><a class="more-text"></a></label>
+		re.string += `${re.nameStr} with population of ${readableNumber(re.pop)} milion.
+<input type="checkbox" class="more-switch" id="rc-${re.seed}-det"><label for="rc-${re.seed}-det"><a class="more-text"></a></label>
 <div class="more">${re.perks.text}</div>
 </div>`
 		re.races.string += re.string;	
@@ -260,7 +317,7 @@ function Races(seed, setting) { //creating races
 			return 0;
 		} else {
 			var perc = randomNorm(seed, 1, 100, 3);
-			rc.numText = `, out of which ${Math.round(rc.setting.pop*perc/10e5)/100} milion (${perc}%) are alien`
+			rc.numText = `, out of which ${readableNumber(rc.setting.pop * perc / 100)} (${perc}%) are alien`
 			return perc;
 		}
 	})()
@@ -521,12 +578,14 @@ function Setting(seed) {
 		roll = probRoll(st.data.technology.val, st.data.technology.prob, seed);
 		st.tech.text = roll.val.text;
 		st.tech.index = roll.index;
+		st.tech.flags = roll.val.flags;
 		pushFlags(roll.val.flags, st.flags);
 		
 		st.magic.seed = st.seed * st.p + 2; //and magic
 		roll = probRoll(st.data.magic.val, st.data.magic.prob, seed);
 		st.magic.text = roll.val.text;
 		st.magic.index = roll.index;
+		st.magic.flags = roll.val.flags;
 		pushFlags(roll.val.flags, st.flags);
 		
 		st.size = randomNorm((st.seed * st.p + 3), 100, 1500, 1.3); //planet's size in mln km^2
@@ -613,7 +672,7 @@ function Setting(seed) {
 		
 		/* TESKT DO WYPISANIA ----------------------------------------------------------------------------------------------------------------------------*/
 		st.string = `<h1>The world of ${st.name}</h1><section><h2>Basic data</h2><p>This world's technological level is that of ${st.tech.text} and ${st.magic.text}.</p>
-<p>The planet's surface is ${st.size} mln km² (${Math.round(st.size/510*100)/100} area of Earth), with land taking ${st.land}% of it. Its day lasts ${st.dayLength} hours.</p>
+<p>The planet's surface is ${readableNumber(st.size)} km² (${Math.round(st.size/510*100)/100} area of Earth), with land taking ${st.land}% of it. Its day lasts ${st.dayLength} hours.</p>
 <p>The average temperature is ${st.temperature}°C (${
 		(function(){
 			if(st.temperature === 15){
@@ -627,7 +686,7 @@ function Setting(seed) {
 			}
 		})()
 	}).</p>
-<p>The planet is inhabitated by ${Math.round(st.pop/10e3)/100} milion people${st.races.numText}.</p>
+<p>The planet is inhabitated by ${readableNumber(st.pop)} people${st.races.numText}.</p>
 </section>
 <section>
 <h2>Gods</h2>
@@ -664,7 +723,7 @@ function touchUp(){
 //all the stuff that happens before actually generating the content
 var seedInput = document.getElementById("seed"),
 	settingButton = document.getElementById("settingButton");
-seedInput.value = /*Math.floor(Math.random()*10000); */ 4 //DEBUG ------------------------------------------------------------------
+seedInput.value = /*Math.floor(Math.random()*10000)*/0; //DEBUG!
 
 var set
 

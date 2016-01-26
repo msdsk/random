@@ -93,6 +93,11 @@
 			"flags" : ["war", "long war"]
 		},
 		{
+			 "text" : "The silence will fall",
+			  "req" : [],
+			"flags" : []
+		},
+		{
 			 "text" : "Population of this world has been ravaged by a plague",
 			  "req" : [],
 			"flags" : ["plague"]
@@ -1235,85 +1240,85 @@
     "civs" : {
         "governments" : [
             {
-                 "text" : "anarchy",
+                 "text" : "an anarchic state",
                   "req" : [],
                 "flags" : ["anarchy"],
-                 "pron" : []
+                 "pron" : ["commune of #name"]
             },
             {
-                 "text" : "theocracy",
-                  "req" : ["!no worship"],
+                 "text" : "a theocracy",
+                  "req" : [],
                 "flags" : ["thoecracy"],
                 "pron"  : ["archbishopic of #name"]
             },
             {
-                 "text" : "magocracy",
-                  "req" : ["!no worship"],
-                "flags" : ["thoecracy"],
-                "pron"  : ["archbishopic of #name"]
+                 "text" : "a magocracy",
+                  "req" : [],
+                "flags" : ["magocracy"],
+                "pron"  : ["magical real of #name"]
             },
             {
-                 "text" : "democracy",
+                 "text" : "a democracy",
                   "req" : [],
                 "flags" : ["democracy"],
+                "pron"  : ["republic of #name", "#name federation", "#name confederation", "#name commonwealth", "most serene republic of #name"]
+            },
+            {
+                 "text" : "a presidential dictatorship",
+                  "req" : [],
+                "flags" : [],
                 "pron"  : ["republic of #name", "#name federation", "#name confederation"]
             },
             {
-                 "text" : "presidential dictatorship",
+                 "text" : "a facist dictatorship",
+                  "req" : [],
+                "flags" : [],
+                "pron"  : ["#name reich"]
+            },
+            {
+                 "text" : "a communist state",
+                  "req" : [],
+                "flags" : [],
+                "pron"  : ["#name socialist republic", "people's republic of #name"]
+            },
+            {
+                 "text" : "an absolute monarchy",
+                  "req" : [],
+                "flags" : [],
+                "pron"  : ["kingdom of #name", "empire of #name", "archduchy of #name", "jarldom of #name", "kingdom of #name", "#name kingdom", "princedom of #name", "#name kingdom"]
+            },
+            {
+                 "text" : "a feudal monarchy",
+                  "req" : [],
+                "flags" : [],
+                "pron"  : ["kingdom of #name", "empire of #name", "archduchy of #name", "jarldom of #name", "kingdom of #name", "#name kingdom", "princedom of #name", "#name kingdom"]
+            },
+            {
+                 "text" : "a tribal democracy",
                   "req" : [],
                 "flags" : [],
                 "pron"  : []
             },
             {
-                 "text" : "facist dictatorship",
+                 "text" : "a hivemind",
                   "req" : [],
                 "flags" : [],
-                "pron"  : []
-            },
-            {
-                 "text" : "communist state",
-                  "req" : [],
-                "flags" : [],
-                "pron"  : []
-            },
-            {
-                 "text" : "absolute monarchy",
-                  "req" : [],
-                "flags" : [],
-                "pron"  : []
-            },
-            {
-                 "text" : "feudal monarchy",
-                  "req" : [],
-                "flags" : [],
-                "pron"  : []
-            },
-            {
-                 "text" : "tribal democracy",
-                  "req" : [],
-                "flags" : [],
-                "pron"  : []
-            },
-            {
-                 "text" : "hivemind",
-                  "req" : [],
-                "flags" : [],
-                "pron"  : []
+                "pron"  : ["#name collective", "collective of #name"]
             },
             {
                  "text" : "anarchosyndicalist commune",
                   "req" : [],
                 "flags" : [],
-                "pron"  : []
+                "pron"  : ["#name collective", "collective of #name", "#name commune", "commune of #name"]
             },
             {
-                 "text" : "ancap state",
+                 "text" : "an ancap state",
                   "req" : [],
                 "flags" : [],
                 "pron"  : []
             },
             {
-                 "text" : "technocracy",
+                 "text" : "a technocracy",
                   "req" : [],
                 "flags" : [],
                 "pron"  : []

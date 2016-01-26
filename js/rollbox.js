@@ -1,3 +1,17 @@
+function readableNumber(num){
+	if(num > 1e9){
+		return (Math.round(num / 1e7)/100) + " bilion"
+	}
+	if(num > 1e6){
+		return (Math.round(num / 1e4)/100) + " milion"
+	}
+	if(num > 1e3){
+		return (Math.round(num / 1e1)/100) + " thousand"
+	} else {
+		return num
+	}
+}
+
 function randomRange(num, min, max){
 	if(typeof max === "number"){
 		if(typeof min !== "number"){
@@ -49,14 +63,21 @@ function pushFlags(newFlags, oldFlags, noPush){
 	}
 }
 
+function replacePart(text, replace){
+	for (var key in replace) {
+		var reg = new RegExp(key, "g");
+		text = text.replace(reg, replace[key]);
+	}
+	return text;
+}
+
 function perksText(perks, replace){ //turning text from perks object into a nice string
 	var perskstring = "",
 		i = 0, ii = perks.length;
 	for (i; i<ii; i++){
 		var txt = perks[i].text;
-		if (replace) for (var key in replace) {
-			var reg= new RegExp(key, "g");
-			txt = txt.replace(reg, replace[key]);
+		if (replace) {
+			txt = replacePart(txt, replace);
 		}
 		perskstring += txt + "<br>"
 	}
@@ -144,14 +165,19 @@ function ajax(url, type) { //dzwonimy po dane!
 }
 
 function probRoll(resArr, probArr, seed){
-	var cumulativeProbArr = [0, probArr[0]],
-		i = 2, ii = Math.min(resArr.length+1, probArr.length+1);
-	if(ii < 1){
-		throw "No table to roll on!"
+	if(!Array.isArray(probArr) || probArr.length < 1){
+		var a = 0, aa = resArr.length, probArr = [];
+		for(a; a<aa; a++){
+			probArr.push(1);
+		}
 	}
 	if(typeof seed !== "number"){
 		throw "No seed to roll on table!"
 	}
+	
+	var cumulativeProbArr = [0, probArr[0]],
+		i = 2, ii = Math.min(resArr.length+1, probArr.length+1);
+	
 	for(i; i<ii; i++){
 		var prob = cumulativeProbArr[i-1] + (probArr[i-1] > 0 ? probArr[i-1] : 0)
 		cumulativeProbArr.push(prob);
@@ -171,7 +197,7 @@ function probRoll(resArr, probArr, seed){
 
 function nameGen(seed, nameTable){
 	var nameArray = nameTable;
-	var vowels = "aioueyAIOUEY-", diphthongs = ["ch", "th"];
+	var vowels = "aioueyAIOUEY-", diphthongs = ["ch", "th", "sh"];
 	var newName = "";
 	var syllabeNo = 0;
 	
