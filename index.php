@@ -10,7 +10,7 @@
 	<title>Random generator</title>
 </head>
 <body>
-	<div class="flex-cont">
+	<div class="main-cont">
 		<div id="options" class="options-cont">
 			<form action="">
 				<label>

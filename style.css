@@ -137,10 +137,10 @@ label{
 
 /*3. STYLE KONTENERÓW ---------------------------------------------------------------*/
 
-.flex-cont{
+.main-cont{
 	display: flex;
 	justify-content: center;
-	padding-top: 2em;
+	padding: 2em;
 }
 
 .options-cont{
@@ -149,6 +149,7 @@ label{
 	padding: 1em;
 	border-radius: 5px;
 	box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+	margin-bottom: 1em;
 }
 
 .center-width{
@@ -156,7 +157,7 @@ label{
 	max-width: 40em;
 	margin: auto;
 }
-.flex-cont > .center-width{
+.main-cont > .center-width{
 	margin: 0 0 0 2em;
 }
 .tool-cont{
@@ -215,4 +216,13 @@ input:not(:checked) ~ .more{
 	width: 1px;
 	flex-grow: 100;
 	margin: 0 .5em;
+}
+
+@media (max-width: 50em){
+	.main-cont{
+		flex-direction: column;
+	}
+	.main-cont > .center-width{
+		margin: 0;
+	}
 }

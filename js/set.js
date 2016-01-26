@@ -613,7 +613,16 @@ function Setting(seed) {
 		
 		/* TESKT DO WYPISANIA ----------------------------------------------------------------------------------------------------------------------------*/
 		st.string = `<h1>The world of ${st.name}</h1><section><h2>Basic data</h2><p>This world's technological level is that of ${st.tech.text} and ${st.magic.text}.</p>
-<p>The planet's surface is ${st.size} mln km² (${Math.round(st.size/510*100)/100} area of Earth), with land taking ${st.land}% of it. Its day lasts ${st.dayLength} hours.</p>
+<p>The planet's surface is ${st.size} mln km² (${Math.round(st.size/510*100)/100} area of Earth), with land taking ${st.land}% of it.`
+		
+		if(st.flags["tidally locked"]){
+			st.dayLength = random(st.seed + 9.1, 100, 50000);
+			st.string += `Its day lasts ${st.dayLength} earthly days.`			
+		} else {
+			st.string += `Its day lasts ${st.dayLength} hours.`
+		}
+		
+		st.string += `</p>
 <p>The average temperature is ${st.temperature}°C (${
 		(function(){
 			if(st.temperature === 15){

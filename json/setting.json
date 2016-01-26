@@ -74,7 +74,7 @@
 		},
 		{
 			 "text" : "The world is empty on the inside",
-			  "req" : [],
+			  "req" : ["!volcanos"],
 			"flags" : ["empty world"]
 		},
 		{
@@ -208,9 +208,9 @@
 			"flags" : []
 		},
 		{
-			 "text" : "The planet is almost completely tidialy locked to its sun, causing extreme weather conditions. Half of it is a red hot desert while the other is covered in snow",
+			 "text" : "The planet is almost completely tidally locked to its sun, causing extreme weather conditions. Half of it is a red hot desert while the other is covered in snow",
 			  "req" : ["!sun"],
-			"flags" : ["sun", "extreme weather"]
+			"flags" : ["sun", "extreme weather", "tidally locked"]
 		},
 		{
 			 "text" : "There are no other stars on the sky",
@@ -279,8 +279,8 @@
 		},
 		{
 			 "text" : "The planet has very active volcanos",
-			  "req" : [],
-			"flags" : []
+			  "req" : ["!empty world"],
+			"flags" : ["volcanos"]
 		},
 		{
 			 "text" : "Sandstorms are very common, often destroying whole settlements on their path",
@@ -293,7 +293,7 @@
 			"flags" : []
 		},
 		{
-			 "text" : "There is a strategic source of energy unknow to the Earth",
+			 "text" : "There is a strategic source of energy unknown to the Earth",
 			  "req" : [],
 			"flags" : []
 		},
@@ -403,11 +403,6 @@
 			{
 				 "text" : "#nom claims to have created booze",
 				  "req" : [],
-				"flags" : []
-			},
-			{
-				 "text" : "#nom has given fire to humans",
-				  "req" : ["!inactive"],
 				"flags" : []
 			},
 			{
