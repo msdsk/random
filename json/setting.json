@@ -678,7 +678,7 @@
 				"flags" : ["ascended"]
 			},
 			{
-				 "text" : "There used to be other gods, but #nom killed them",
+				 "text" : "there used to be other gods, but #nom killed them",
 				  "req" : [],
 				"flags" : ["deicide"]
 			},
@@ -700,7 +700,8 @@
 				"val" : [
 					{"text":"Humanoidal", "flags":["humanoid"]},
 					{"text":"Bestial", "flags":["beast"]},
-					{"text":"Avian", "flags":["avian"]}
+					{"text":"Avian", "flags":["avian"]},
+					{"text":"Slime", "flags":["slime"]}
 				],
 				"prob" : [5, 2, 1]
 			},
@@ -801,7 +802,7 @@
 				},		
 				{
 					 "text" : "their wings are only for show, for they can't fly",
-					  "req" : ["flying"],
+					  "req" : ["!flying"],
 					"flags" : ["flightless"]
 				},		
 				{
@@ -834,6 +835,43 @@
 					  "req" : [],
 					"flags" : []
 				}						
+			],
+			"slimePerks" : [
+				{
+					 "text" : "they are translucent",
+					  "req" : [],
+					"flags" : []
+				},
+				{
+					 "text" : "their touch is corrosive",
+					  "req" : [],
+					"flags" : []
+				},
+				{
+					 "text" : "they can mimick the shape of other species",
+					  "req" : [],
+					"flags" : []
+				},
+				{
+					 "text" : "they are barely sapient",
+					  "req" : ["!intelligent"],
+					"flags" : ["dumb"]
+				},
+				{
+					 "text" : "they are far brighter than one would otherwise expect from a blob of mucus",
+					  "req" : ["!dumb"],
+					"flags" : ["intelligent"]
+				},
+				{
+					 "text" : "they live mostly underground",
+					  "req" : [],
+					"flags" : []
+				},
+				{
+					 "text" : "they can be found in almost any ancient ruin",
+					  "req" : ["world-ruins"],
+					"flags" : []
+				}
 			]
 		},
 		"known" : {
@@ -1114,6 +1152,11 @@
 				 "text" : "They are led by a hivemind",
 				  "req" : ["!individual"],
 				"flags" : ["hivemind"]
+			},
+			{
+				 "text" : "They were created by an ancient wizard",
+				  "req" : ["!world-no magic"],
+				"flags" : []
 			},
 			{
 				 "text" : "They are extremaly individual",
