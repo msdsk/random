@@ -671,9 +671,16 @@ function Setting(seed) {
 		st.pol = new Politics(st.seed * st.p + 8, st);
 		
 		/* TESKT DO WYPISANIA ----------------------------------------------------------------------------------------------------------------------------*/
-		st.string = `<h1>The world of ${st.name}</h1><section><h2>Basic data</h2><p>This world's technological level is that of ${st.tech.text} and ${st.magic.text}.</p>
-<p>The planet's surface is ${readableNumber(st.size)} km² (${Math.round(st.size/510*100)/100} area of Earth), with land taking ${st.land}% of it. Its day lasts ${st.dayLength} hours.</p>
-<p>The average temperature is ${st.temperature}°C (${
+		st.string = `<h1>The world of ${st.name}</h1><section><h2>Basic data</h2><p>This world's technological level is that of ${st.tech.text} and ${st.magic.text}.</p><p>The planet's surface is ${readableNumber(st.size)} km² (${Math.round(st.size/510*100)/100} area of Earth), with land taking ${st.land}% of it. `
+		
+		if(st.flags["tidally locked"]){
+			st.dayLength = random(st.seed + 9.1, 100, 50000);
+			st.string += `Its day lasts ${st.dayLength} earthly days.`			
+		} else {
+			st.string += `Its day lasts ${st.dayLength} hours.`
+		}
+		
+		st.string += `</p><p>The average temperature is ${st.temperature}°C (${
 		(function(){
 			if(st.temperature === 15){
 					return "same as on Earth";
@@ -686,24 +693,24 @@ function Setting(seed) {
 			}
 		})()
 	}).</p>
-<p>The planet is inhabitated by ${readableNumber(st.pop)} people${st.races.numText}.</p>
-</section>
-<section>
-<h2>Gods</h2>
-${st.gods.string}
-</section>
-<section>
-<h2>Races</h2>
-${st.races.string}
-</section>
-<section>
-<h2>Civilizations</h2>
-${st.pol.string}
-</section>
-<section>
-<h2>World's traits:</h2>
-<p>${st.perks.text}</p>
-</section>`
+	<p>The planet is inhabitated by ${readableNumber(st.pop)} people${st.races.numText}.</p>
+	</section>
+	<section>
+	<h2>Gods</h2>
+	${st.gods.string}
+	</section>
+	<section>
+	<h2>Races</h2>
+	${st.races.string}
+	</section>
+	<section>
+	<h2>Civilizations</h2>
+	${st.pol.string}
+	</section>
+	<section>
+	<h2>World's traits:</h2>
+	<p>${st.perks.text}</p>
+	</section>`
 			
 		resultCont.innerHTML = st.string;
 	}
