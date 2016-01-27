@@ -22,7 +22,7 @@ function Civ(seed, pol){
     civ.fullName = "";
 	civ.gov = {};
 	civ.races = {};
-	civ.mainRace = {name:"", id:""};
+	civ.mainRace = {name:"", obj:""};
 	civ.string = "";
     
     function init() {
@@ -53,7 +53,7 @@ function Civ(seed, pol){
 						civ.races[name] = racePop;
 						civ.alienPop += racePop;
 						
-						if(racePop > civ.races[civ.mainRace] || !civ.races[civ.mainRace]){ //let's check if they are a new main race
+						if(racePop > civ.races[civ.mainRace.name] || !civ.races[civ.mainRace.name]){ //let's check if they are a new main race
 							civ.mainRace.name = name;
 						}
 						
@@ -85,13 +85,26 @@ function Civ(seed, pol){
 			
 			var a = 0, aa = civ.setting.races.races.length;
 			for(a; a<aa; a++){
-				if(civ.setting.races.races[a].name === civ.mainRace.name){
-					civ.mainRace.id = civ.setting.races.races[a].seed;
+				if(civ.setting.races.races[a].name === civ.mainRace.name){ //let's find the main race is it's gonna be an important one
+					civ.mainRace.obj = civ.setting.races.races[a];
+					for(var key in civ.mainRace.obj){ //let's copy race's flag
+						if(civ.mainRace.obj.hasOwnProperty(key) && civ.mainRace.obj[key] === true){
+							civ.flags["race-" + key] = true;
+						}
+					}
 				}
 			}
 			
 		}
 		generatePopulation();
+		
+		civ.flags["evil"] = (function(){
+			if(civ.mainRace.obj && civ.mainRace.obj.flags["evil"] === true || random(civ.seed + 4.35, 0, 8) === 0){ //if a race who created this civilization is evil, the civ is gonna be evil too; otherwise it's rather rare
+				return true;
+			} else {
+				return false;
+			}
+		})()
 		
 		function generateGov(){
 			var probTable = civ.data.governmentsProb[civ.setting.tech.flags[0]];
@@ -116,13 +129,27 @@ function Civ(seed, pol){
     }	
     init();
 	
-	civ.string = `<div><b>${civ.name}</b>, ${civ.gov.val.text} `
+	var popString = (function(){
+		var string = `<h3>population</h3>`;
+		string += civ.humanPop > 0 ? `Human population: ${readableNumber(civ.humanPop)}<br>` : ``;
+		for(var name in civ.races){
+			string += `${name}: ${readableNumber(civ.races[name])}<br>`
+		}
+		return string;
+	})()
+	
+	civ.string = `<div id="civ-${civ.seed}"><b>${civ.name}</b>, ${civ.gov.val.text} `
 	if(civ.flags["alien civilization"] && civ.races[civ.mainRace.name] !== civ.pop){
-		civ.string += `inhabitated mostly by <a href="#rc-${civ.mainRace.id}">${civ.mainRace.name}</a>, `
+		civ.string += `inhabitated mostly by <a href="#rc-${civ.mainRace.obj.seed}">${civ.mainRace.name}</a>, `
 	} else if(civ.flags["alien civilization"]){
-		civ.string += `inhabitated entirely by <a href="#rc-${civ.mainRace.id}">${civ.mainRace.name}</a>, ` 		
+		civ.string += `inhabitated entirely by <a href="#rc-${civ.mainRace.obj.seed}">${civ.mainRace.name}</a>, ` 		
 	}
-	civ.string += `with a population of ${readableNumber(civ.pop)}.</div>`
+	civ.string += `with a population of ${readableNumber(civ.pop)}.${(civ.flags["evil"] ? " <b>They are evil</b>." : "")}
+<input type="checkbox" class="more-switch" id="civ-${civ.seed}-det"><label for="civ-${civ.seed}-det"><a class="more-text"></a></label>
+<div class="more">
+${popString}
+</div>
+</div>`
     
     return civ;
 }
@@ -218,6 +245,7 @@ function Race(races, seed){ //details for a single race
 		re.data = re.races.data.procedural;
 		re.name = nameGen(re.seed+.5, re.setting.data.names);
 		re.type = probRoll(re.data.type.val, re.data.type.prob, re.seed+.5);
+		pushFlags(re.type.val.flags, re.flags);
 		re.nameStr = `<div id="rc-${re.seed}">${re.type.val.text} race <b>${re.name}</b>,`
 		re.perks.data.push.apply(re.perks.data, perksRoll(re.seed + .77, re.data[re.type.val.flags[0]+"Perks"], re.flags, random(re.seed * 3.5 + 3, 1, 3)));
 		re.perks.data.push.apply(re.perks.data, perksRoll(re.seed + .77, re.races.data.common, re.flags, random(re.seed * 3.5 + 3, 1, 3)));
@@ -226,9 +254,11 @@ function Race(races, seed){ //details for a single race
 	function knownRace(){ //creating a race with a well-known properties
 		re.data = re.races.data.known;
 		re.type = probRoll(re.data.type.val, re.data.type.prob, re.seed+.5);
+		pushFlags(re.type.val.flags, re.flags);
 		re.subtype = (random(re.seed+.65, 0, 2) === 0 || re.races.flags[re.type.val.flags[0]]) ? probRoll(re.data.subtype.val, re.data.subtype.prob, re.seed+.75) : null;
 		if(re.subtype){
 			re.name = re.subtype.val.text + " " + re.type.val.text;
+			pushFlags(re.subtype.val.flags, re.flags);
 		} else {
 			re.name = re.type.val.text;
 			re.races.flags[re.type.val.flags[0]] = true;
@@ -432,7 +462,7 @@ function Pantheon(seed, setting) { //generating gods
 			gd.flags[gd.domain] = true;
 			
 			gd.evil = (function(){ //evil gods may be fun, but they shouldn't appear too often
-				if(random(gd.seed*3+1, 0, 3) === 0 || gd.flags["darkness"] || gd.flags["chaos"]){
+				if(random(gd.seed*3+1, 0, 3) === 0 || ((gd.flags["darkness"] || gd.flags["chaos"]) && random(gd.seed*3+1.5, 0, 3) > 0) ){
 					gd.flags["evil"] = true;
 					gd.perks.data.push({text:"#nom is evil"})
 					gd.pantheon.flags["evil gods"] = true;
@@ -696,6 +726,10 @@ function Setting(seed) {
 	<p>The planet is inhabitated by ${readableNumber(st.pop)} people${st.races.numText}.</p>
 	</section>
 	<section>
+	<h2>World's traits:</h2>
+	<p>${st.perks.text}</p>
+	</section>
+	<section>
 	<h2>Gods</h2>
 	${st.gods.string}
 	</section>
@@ -706,10 +740,6 @@ function Setting(seed) {
 	<section>
 	<h2>Civilizations</h2>
 	${st.pol.string}
-	</section>
-	<section>
-	<h2>World's traits:</h2>
-	<p>${st.perks.text}</p>
 	</section>`
 			
 		resultCont.innerHTML = st.string;
@@ -732,24 +762,24 @@ var seedInput = document.getElementById("seed"),
 	settingButton = document.getElementById("settingButton");
 seedInput.value = Math.floor(Math.random()*10000); //DEBUG!
 
-var set
+var set;
 
 function generate(d){
-		var setting;
-		set = JSON.parse(JSON.stringify(d[0]));
-		set.names = JSON.parse(JSON.stringify(d[1]));
-		var seed = parseInt(seedInput.value) 
-		seed = (seed !== "") ? seed : Math.floor(Math.random()*10000);
-		if(seed > 10000000){
-			seed = Math.random()*10000;
-			window.alert("The seed was too big for us to handle, so you got something random. Sorry!")
-			return 0;
-		}
-		console.log(set);
-		setting = new Setting(seed);
-		settingButton.removeAttribute("disabled");
-		console.log(setting);
-		touchUp();
+	var setting;
+	set = JSON.parse(JSON.stringify(d[0]));
+	set.names = JSON.parse(JSON.stringify(d[1]));
+	var seed = parseInt(seedInput.value);
+	console.log(seed);
+	//seed = (seed !== "") ? seed : Math.floor(Math.random()*10000);
+	if(seed !== seed || seed > 10000000 || seed < 0){
+		seedInput.value = seed = Math.round(Math.random()*10000);
+		window.alert("The seed was just so wrong, you got something random. Sorry!\nHint: a seed can be a number between 0 and 10.000.000")
+	}
+	console.log(set);
+	setting = new Setting(seed);
+	settingButton.removeAttribute("disabled");
+	console.log(setting);
+	touchUp();
 }
 
 Promise.all([ajax("json/setting.json", "json"), ajax("json/names.json", "json")])

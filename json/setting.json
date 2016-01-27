@@ -1,16 +1,16 @@
 {
 	"technology" : {
 		"val" : [
-			{"text":"stone age", "flags":["prehistoric", "low tech"]}, 
-			{"text":"bronze age", "flags":["low tech"]}, 
-			{"text":"antiquity", "flags":["low tech"]}, 
-			{"text":"middle ages", "flags":["low tech"]}, 
-			{"text":"renaissance", "flags":["mid tech"]}, 
-			{"text":"enlightment", "flags":["mid tech", "social changes"]}, 
-			{"text":"industrial revolution", "flags":["early industrial"]}, 
-			{"text":"early 20th century", "flags":["modern tech", "high tech"]},
+			{"text":"a stone age", "flags":["prehistoric", "low tech"]}, 
+			{"text":"a bronze age", "flags":["low tech"]}, 
+			{"text":"an antiquity", "flags":["low tech"]}, 
+			{"text":"a middle ages", "flags":["low tech"]}, 
+			{"text":"a renaissance", "flags":["mid tech"]}, 
+			{"text":"an enlightment", "flags":["mid tech", "social changes"]}, 
+			{"text":"an industrial revolution", "flags":["early industrial"]}, 
+			{"text":"an early 20th century", "flags":["modern tech", "high tech"]},
 			{"text":"contemporary times", "flags":["modern tech", "information revolution", "high tech"]}, 
-			{"text":"space opera", "flags":["futuristic", "high tech"]}
+			{"text":"a space opera", "flags":["futuristic", "high tech"]}
 		],
 		"prob" : [2, 3, 4, 6, 3, 3, 5, 3, 5, 3, 2]
 	},
@@ -1099,9 +1099,9 @@
 					"flags" : []
 				},
 				{
-					 "text" : "They ",
-					  "req" : ["world-high magic", "|world-high tech"],
-					"flags" : []
+					 "text" : "They are born out of the depth of the earth",
+					  "req" : [],
+					"flags" : ["sex"]
 				}
 			],
 			"kenderPerks" : [
@@ -1134,6 +1134,11 @@
 					 "text" : "They don't see anything wrong with their behaviour, that's why most civilizations see them as pariahs",
 					  "req" : [],
 					"flags" : []
+				},
+				{
+					 "text" : "They tend to steal out of mindless need for evil acts",
+					  "req" : [],
+					"flags" : ["evil"]
 				}
 			]
 		},
@@ -1142,6 +1147,41 @@
 				 "text" : "They are huge threat tho the world's stability",
 				  "req" : ["aggressive"],
 				"flags" : []
+			},
+			{
+				 "text" : "They are outright evil",
+				  "req" : ["!evil", "!good", "!indifferent"],
+				"flags" : ["evil"]
+			},
+			{
+				 "text" : "They worship an evil god",
+				  "req" : ["!evil", "!good", "!world-no worship", "world-evil gods"],
+				"flags" : ["evil"]
+			},
+			{
+				 "text" : "They find pleasure in torturing other species",
+				  "req" : ["!evil", "!good", "!indifferent"],
+				"flags" : ["evil"]
+			},
+			{
+				 "text" : "Their society is based on mindless slaughter",
+				  "req" : ["!evil", "!good", "!indifferent"],
+				"flags" : ["evil"]
+			},
+			{
+				 "text" : "They are known for their kindness",
+				  "req" : ["!evil", "!kender", "!indifferent"],
+				"flags" : ["good"]
+			},
+			{
+				 "text" : "They care for other races as for their own members",
+				  "req" : ["!evil"],
+				"flags" : ["good"]
+			},
+			{
+				 "text" : "They greatly helped humanity in the past, asking nothing in return",
+				  "req" : ["!evil", "!kender"],
+				"flags" : ["good"]
 			},
 			{
 				 "text" : "They are led by a hivemind",
@@ -1160,13 +1200,13 @@
 			},
 			{
 				 "text" : "They don't care for other races",
-				  "req" : ["!friendly", "!aggressive"],
+				  "req" : ["!good", "!aggressive"],
 				"flags" : ["indifferent"]
 			},
 			{
 				 "text" : "They hate humans with a burning passion",
-				  "req" : ["!friendly", "!indifferent"],
-				"flags" : ["aggressive"]
+				  "req" : ["!good", "!indifferent"],
+				"flags" : ["aggressive", "evil"]
 			},
 			{
 				 "text" : "They hate gods",
@@ -1190,13 +1230,13 @@
 			},
 			{
 				 "text" : "They are not very bright",
-				  "req" : ["!intelligent"],
+				  "req" : ["!intelligent", "!dumb"],
 				"flags" : ["dumb"]
 			},
 			{
 				 "text" : "Humans seek their knowledge and they are happy to share them",
 				  "req" : ["intelligent", "!aggressive", "!indifferent", "!fearsome"],
-				"flags" : ["friendly"]
+				"flags" : ["good"]
 			},
 			{
 				 "text" : "They are great story tellers",
@@ -1210,7 +1250,7 @@
 			},
 			{
 				 "text" : "They are almost impossible to communcate with",
-				  "req" : ["!friendly"],
+				  "req" : ["!good"],
 				"flags" : ["indifferent"]
 			},
 			{
@@ -1260,7 +1300,7 @@
 			},
 			{
 				 "text" : "They are feared by humans",
-				  "req" : ["!friendly"],
+				  "req" : ["!good"],
 				"flags" : ["fearsome"]
 			},
 			{
@@ -1272,6 +1312,26 @@
 				 "text" : "Their ancestors have been mingling with people for ages",
 				  "req" : ["half"],
 				"flags" : []
+			},
+			{
+				 "text" : "They love to mingle with other species, but no offspring can be created  out of it",
+				  "req" : ["!sex"],
+				"flags" : ["sex"]
+			},
+			{
+				 "text" : "They love to mingle with humans, often resulting in infertile offspring",
+				  "req" : ["!sex", "humanoid"],
+				"flags" : ["sex"]
+			},
+			{
+				 "text" : "They percieve relationships with other species as bestialty",
+				  "req" : ["!sex"],
+				"flags" : ["sex"]
+			},
+			{
+				 "text" : "They have strict sexual taboos",
+				  "req" : ["!sex"],
+				"flags" : ["sex"]
 			}
 		]
 	},
@@ -1287,7 +1347,7 @@
                  "text" : "a theocracy",
                   "req" : [],
                 "flags" : ["thoecracy"],
-                "pron"  : ["archbishopic of #name"]
+                "pron"  : ["archbishopic of #name", "bichopic o"]
             },
             {
                  "text" : "a magocracy",
@@ -1299,19 +1359,19 @@
                  "text" : "a democracy",
                   "req" : [],
                 "flags" : ["democracy"],
-                "pron"  : ["republic of #name", "#name federation", "#name confederation", "#name commonwealth", "most serene republic of #name"]
+                "pron"  : ["republic of #name", "#name federation", "#name confederation", "#name commonwealth", "most serene republic of #name", "#name republic"]
             },
             {
                  "text" : "a presidential dictatorship",
                   "req" : [],
                 "flags" : [],
-                "pron"  : ["republic of #name", "#name federation", "#name confederation"]
+                "pron"  : ["republic of #name", "#name federation", "#name confederation", "#name republic"]
             },
             {
                  "text" : "a facist dictatorship",
                   "req" : [],
                 "flags" : [],
-                "pron"  : ["#name reich"]
+                "pron"  : ["#name reich", "#name republic"]
             },
             {
                  "text" : "a communist state",
@@ -1335,7 +1395,7 @@
                  "text" : "a tribal democracy",
                   "req" : [],
                 "flags" : [],
-                "pron"  : []
+                "pron"  : ["moot of #name", "#name tribe"]
             },
             {
                  "text" : "a hivemind",
@@ -1344,7 +1404,7 @@
                 "pron"  : ["#name collective", "collective of #name"]
             },
             {
-                 "text" : "anarchosyndicalist commune",
+                 "text" : "an anarchosyndicalist commune",
                   "req" : [],
                 "flags" : [],
                 "pron"  : ["#name collective", "collective of #name", "#name commune", "commune of #name"]
@@ -1386,6 +1446,10 @@
 			"small" : {
 				"11" : 1
 			},
+			"big" : {
+				"0" : -6,
+				"9" : -5
+			},
 			"world-no magic" : {
 				"2" : -6
 			},
@@ -1394,6 +1458,16 @@
 			},
 			"world-high magic" : {
 				"2" : 2
+			},
+			"race-dumb" : {
+				"0" : 4,
+				"1" : 2,
+				"3" : -4,
+				"7" : 4,
+				"9" : 7
+			},
+			"race-hivemind" : {
+				"10" : 50
 			}
 		}
     }
