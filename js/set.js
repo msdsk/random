@@ -15,6 +15,7 @@ function Civ(seed, pol){
 		data : [],
 		text : ""
 	};
+	
     civ.pop = 0;
 	civ.alienPop = 0;
 	civ.humanPop = 0;
@@ -22,8 +23,11 @@ function Civ(seed, pol){
     civ.fullName = "";
 	civ.gov = {};
 	civ.races = {};
-	civ.mainRace = {name:"", obj:""};
+	civ.mainRace = {name:"", obj:{}};
 	civ.string = "";
+	
+	civ.gods = {};
+	civ.mainGod = {name:"", obj:{}}
     
     function init() {
 		
@@ -81,19 +85,23 @@ function Civ(seed, pol){
 			}
 			if(civ.alienPop > civ.humanPop){
 				civ.flags["alien civilization"] = true;
+			} else {
+				civ.mainRace.name = "";
 			}
 			
 			var a = 0, aa = civ.setting.races.races.length;
-			for(a; a<aa; a++){
-				if(civ.setting.races.races[a].name === civ.mainRace.name){ //let's find the main race is it's gonna be an important one
-					civ.mainRace.obj = civ.setting.races.races[a];
-					for(var key in civ.mainRace.obj){ //let's copy race's flag
-						if(civ.mainRace.obj.hasOwnProperty(key) && civ.mainRace.obj[key] === true){
-							civ.flags["race-" + key] = true;
+			if(civ.mainRace.name){
+				for(a; a<aa; a++){
+					if(civ.setting.races.races[a].name === civ.mainRace.name){ //let's find the main race is it's gonna be an important one
+						civ.mainRace.obj = civ.setting.races.races[a];
+						for(var key in civ.mainRace.obj){ //let's copy race's flag
+							if(civ.mainRace.obj.hasOwnProperty(key) && civ.mainRace.obj[key] === true){
+								civ.flags["race-" + key] = true;
+							}
 						}
 					}
 				}
-			}
+			}	
 			
 		}
 		generatePopulation();
@@ -701,7 +709,7 @@ function Setting(seed) {
 		st.pol = new Politics(st.seed * st.p + 8, st);
 		
 		/* TESKT DO WYPISANIA ----------------------------------------------------------------------------------------------------------------------------*/
-		st.string = `<h1>The world of ${st.name}</h1><section><h2>Basic data</h2><p>This world's technological level is that of ${st.tech.text} and ${st.magic.text}.</p><p>The planet's surface is ${readableNumber(st.size)} km² (${Math.round(st.size/510*100)/100} area of Earth), with land taking ${st.land}% of it. `
+		st.string = `<h1>The world of ${st.name}</h1><section><h2>Basic data</h2><p>This world's technological level is that of ${st.tech.text} and ${st.magic.text}.</p><p>The planet's surface is ${readableNumber(st.size)} mln km² (${Math.round(st.size/510*100)/100} area of Earth), with land taking ${st.land}% of it. `
 		
 		if(st.flags["tidally locked"]){
 			st.dayLength = random(st.seed + 9.1, 100, 50000);
