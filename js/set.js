@@ -1,3 +1,9 @@
+var config = {
+	evilCivilizationRate: 7
+}
+
+//SPRAWDZIĆ 108 - HIVEMIND!
+
 /*
 /\/\---------------------------------------------------------------------/\/\
 
@@ -92,7 +98,7 @@ function Civ(seed, pol){
 			var a = 0, aa = civ.setting.races.races.length;
 			if(civ.mainRace.name){
 				for(a; a<aa; a++){
-					if(civ.setting.races.races[a].name === civ.mainRace.name){ //let's find the main race is it's gonna be an important one
+					if(civ.setting.races.races[a].name === civ.mainRace.name){ //let's find the main race is it's gonna be an important thing later on
 						civ.mainRace.obj = civ.setting.races.races[a];
 						for(var key in civ.mainRace.obj){ //let's copy race's flag
 							if(civ.mainRace.obj.hasOwnProperty(key) && civ.mainRace.obj[key] === true){
@@ -107,7 +113,8 @@ function Civ(seed, pol){
 		generatePopulation();
 		
 		civ.flags["evil"] = (function(){
-			if(civ.mainRace.obj && civ.mainRace.obj.flags["evil"] === true || random(civ.seed + 4.35, 0, 8) === 0){ //if a race who created this civilization is evil, the civ is gonna be evil too; otherwise it's rather rare
+			console.log(civ.mainRace);
+			if(civ.mainRace.name && civ.mainRace.obj.flags["evil"] === true || random(civ.seed + 4.35, 0, config.evilCivilizationRate) === 0){ //if a race who created this civilization is evil, the civ is gonna be evil too; otherwise it's rather rare
 				return true;
 			} else {
 				return false;
@@ -317,8 +324,8 @@ function Race(races, seed){ //details for a single race
 		
 		re.string += `${re.nameStr} with population of ${readableNumber(re.pop)}.
 <input type="checkbox" class="more-switch" id="rc-${re.seed}-det"><label for="rc-${re.seed}-det"><a class="more-text"></a></label>
-<div class="more">${re.perks.text}</div>
-</div>`
+<div class="more">${re.perks.text}${(re.flags["evil"]?"<b>They are evil</b>":"")}</div>
+</div>`;
 		re.races.string += re.string;	
 	}
 	init();
@@ -676,7 +683,7 @@ function Setting(seed) {
 		st.perks.text = perksText(st.perks.data)
 		
 		st.pop = (function(){
-			var popProb = st.data.pop[st.tech.index + Math.floor(st.magic.index/3)];
+			var popProb = st.data.pop[st.tech.index + Math.floor(st.magic.index/3)]; //this is an array setting maximum and minimum population for 
 			var roll = randomNorm((seed * st.p + 5), popProb[0], popProb[1])
 			var pop = Math.round(roll * st.size * st.land * 10e4);
 			if(roll < 1.3 * popProb[0]){ //setting some flags depending on pop

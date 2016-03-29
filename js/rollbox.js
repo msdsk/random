@@ -45,8 +45,8 @@ function randomNorm(seed, min, max, skew){
 	return x;
 }
 
-function pushFlags(newFlags, oldFlags, noPush){
-	//noPush - keyword put in flags that should not return to a higher object (usually one denoting already borrowed from it)
+function pushFlags(newFlags, oldFlags, noPush){ //
+	//noPush - keyword put in flags that should not return to a higher object (usually one denoting already borrowed from it, like, "world-magic" shouldn't be pushed back to word flag array)
 	if(Array.isArray(newFlags)){
 		var i = 0, ii = newFlags.length;
 		for(i; i<ii; i++){
@@ -84,7 +84,7 @@ function perksText(perks, replace){ //turning text from perks object into a nice
 	return perskstring;
 }
 
-function checkFlags(flags, oldFlags, prevOk) {
+function checkFlags(flags, oldFlags, prevOk) { //checking if flags on rolled items match global flags
 	var ok = prevOk ? prevOk : true;
 	if(flags.length == 0){
 		return ok;
@@ -120,15 +120,16 @@ function checkFlags(flags, oldFlags, prevOk) {
 	return ok;
 }
 
-function perksRoll(seed, data, flags, times){
+function perksRoll(seed, data, flags, times){ //rolling random item from a flag-dependent array
 	times = times ? times : 1;
 	var perksArr = [];
 	for(i=0; i<times; i++){
 		if(data.length < 1){
-			window.alert("Whoops, something went very wrong. I bet it's your fault.\nYou monster.\n(Actually we've just tried to roll more than we have data for; try another seed and it should work)");
+			/*window.alert("Whoops, something went very wrong. I bet it's your fault.\nYou monster.\n(Actually we've just tried to roll more than we have data for; try another seed and it should work)");*/
 			var err = Error("too much perks, too little data");
-			console.log(err.stack);
-			throw err;
+			console.log("Not enough data to roll on! ", err.stack);
+			break;
+			/*throw err;*/
 		}
 		var roll = random(seed, 0, data.length - 1);
 		if(checkFlags(data[roll].req, flags)){
@@ -144,7 +145,7 @@ function perksRoll(seed, data, flags, times){
 	return perksArr;
 }
 
-function ajax(url, type) { //dzwonimy po dane!
+function ajax(url, type) { //dzwonimy po dane! Z użyciem obietnic!
 	if(!type){
 		type = "text";
 	}
