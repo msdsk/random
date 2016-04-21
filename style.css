@@ -94,6 +94,15 @@ h3{
 	font-weight: bolder;
 }
 
+:root header{
+	padding: .5em 0;
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	box-shadow: 0 3px 3px -3px rgba(0,0,0,0.5);
+	margin-bottom: 1em;
+}
+
 p{
 	margin-bottom: .5em;
 }
@@ -122,7 +131,17 @@ strong{
 }
 
 /*2.1. Inputy*/
-
+label{
+	display: flex;
+	align-items: baseline;
+	margin-bottom: .5em;
+}
+label>.legend{
+	display: block;
+	width: 5em;
+	text-align: right;
+	margin-right: .5em;
+}
 input{
 	border-bottom: 1px solid;
 	padding: .3em;
@@ -152,10 +171,30 @@ label{
 
 /*3. STYLE KONTENERÓW ---------------------------------------------------------------*/
 
-.main-cont{
+.center-width{
+	width: calc(100% - 2em);
+	max-width: 55em;
+	margin: auto;
+}
+.columned{
+	-webkit-column-count: 5;
+	-moz-column-count: 5;
+	-o-column-count: 5;
+	column-count: 5;
+}
+.mainCont{
 	display: flex;
-	justify-content: center;
-	padding: 2em;
+}
+.mainNav{
+	font-size: 1.4em;
+}
+.mainNav_list{
+	display: flex;
+	justify-content: flex-end;
+	list-style: none;
+}
+.mainNav_list_item{
+	margin-left: 1em;
 }
 
 .options-cont{
@@ -164,17 +203,9 @@ label{
 	padding: 1em;
 	border-radius: 5px;
 	box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-	margin-bottom: 1em;
+	margin: 0 1em 2em 0;
 }
 
-.center-width{
-	width: calc(100% - 2em);
-	max-width: 40em;
-	margin: auto;
-}
-.main-cont > .center-width{
-	margin: 0 0 0 2em;
-}
 .tool-cont{
 	display: flex;
 	margin: .5em 0;
@@ -185,16 +216,13 @@ label{
 .tool-cont > *:not(:last-child){
 	margin-right: 1em;
 }
-.columned{
-	-webkit-column-count: 5;
-	-moz-column-count: 5;
-	-o-column-count: 5;
-	column-count: 5;
-}
 
 /*3.1. Rozwijane szczegóły*/
 input.more-switch{
 	display: none;
+}
+.detailsLabel{
+	display: inline;
 }
 input ~ label .more-text:after{
 	content: "More"
@@ -234,10 +262,10 @@ input:not(:checked) ~ .more{
 }
 
 @media (max-width: 50em){
-	.main-cont{
+	.mainCont{
 		flex-direction: column;
 	}
-	.main-cont > .center-width{
+	.mainCont > .center-width{
 		margin: 0;
 	}
 }

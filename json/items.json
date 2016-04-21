@@ -1,0 +1,52 @@
+{
+	"type": [
+		{
+			  "name": "sword",
+			"flags" : ["weapon"]
+		},
+		{
+			  "name": "potion",
+			"flags" : ["magical", "utility"]
+		},
+		{
+			  "name": "banner",
+			"flags" : ["trinket"]
+		},
+		{
+			  "name": "orb",
+			"flags" : ["magical"]
+		}
+	],
+	"adjectives": [
+		{
+			  "name": "awesome",
+			  "req" : ["!useless"],
+			"flags" : ["powerful"]
+		},
+		{
+		 	  "name": "powerful",
+			  "req" : ["!useless"],
+			"flags" : ["powerful"]
+		},
+		{
+			  "name": "silly",
+			  "req" : ["!powerful"],
+			"flags" : ["silly"]
+		},
+		{
+		 	  "name": "broken",
+			  "req" : [],
+			"flags" : ["broken"]
+		},
+		{
+			  "name": "magical",
+			  "req" : [],
+			"flags" : ["magical"]
+		},
+		{
+		 	  "name": "ancient",
+			  "req" : [],
+			"flags" : ["magical"]
+		}
+	]
+}
