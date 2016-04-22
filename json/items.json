@@ -1,42 +1,139 @@
 {
+	"grammar" : {
+		"val" : [
+			"#material #type of #noun",
+			"#adj #type of #noun",
+			"#type"
+		],
+		"prob" : [1,1,1 ]
+	},
 	"type": [
 		{
 			  "name": "sword",
+			  "req" : ["edge"],
+			"flags" : ["weapon"]
+		}
+		{
+			  "name": "bow",
+			  "req" : ["metal", "!wood"],
 			"flags" : ["weapon"]
 		},
 		{
 			  "name": "potion",
-			"flags" : ["magical", "utility"]
+			  "req" : ["liquid"],
+			"flags" : ["magical", "utility", "liquid"]
 		},
 		{
 			  "name": "banner",
+			  "req" : ["textile"],
 			"flags" : ["trinket"]
 		},
 		{
 			  "name": "orb",
-			"flags" : ["magical"]
+			  "req" : ["metal", "|glass", "|magical"],
+			"flags" : ["magical", "trinket"]
+		},
+		{
+			  "name": "scroll",
+			  "req" : ["writable"],
+			"flags" : ["magical", "trinket"]
+		},
+		{
+			  "name": "crown",
+			  "req" : ["metal", "|valuable", "|wood"],
+			"flags" : ["magical", "trinket"]
+		},
+		{
+			  "name": "apparatus",
+			  "req" : ["!flexible"],
+			"flags" : ["utility"]
+		}
+	],
+	"materials" : [
+		{
+			  "name": "metal",
+			"flags" : ["edge", "durable", "metal"]
+		},
+		{
+			  "name": "iron",
+			"flags" : ["edge", "durable", "metal"]
+		},
+		{
+			  "name": "bronze",
+			"flags" : ["edge", "durable", "metal"]
+		},
+		{
+			  "name": "steel",
+			"flags" : ["edge", "durable", "metal"]
+		},
+		{
+			  "name": "wooden",
+			"flags" : ["wood", "durable"]
+		},
+		{
+			  "name": "cloth",
+			"flags" : ["flexible", "textile"]
+		},
+		{
+			  "name": "leather",
+			"flags" : ["flexible", "textile"]
+		},
+		{
+			  "name": "paper",
+			"flags" : ["flexible", "writable", "textile"]
+		},
+		{
+			  "name": "parchment",
+			"flags" : ["flexible", "writable", "durable"]
+		},
+		{
+			  "name": "sapphire",
+			"flags" : ["magical", "gem", "valuable", "durable"]
+		},
+		{
+			  "name": "diamond",
+			"flags" : ["magical", "gem", "valuable", "durable"]
+		},
+		{
+			  "name": "golden",
+			"flags" : ["valuable", "metal"]
 		}
 	],
 	"adjectives": [
 		{
 			  "name": "awesome",
-			  "req" : ["!useless"],
-			"flags" : ["powerful"]
+			  "req" : ["!bad"],
+			"flags" : ["good"]
 		},
 		{
 		 	  "name": "powerful",
-			  "req" : ["!useless"],
-			"flags" : ["powerful"]
+			  "req" : ["!bad"],
+			"flags" : ["good"]
 		},
 		{
 			  "name": "silly",
-			  "req" : ["!powerful"],
-			"flags" : ["silly"]
+			  "req" : ["!good"],
+			"flags" : ["bad", "silly"]
+		},
+		{
+			  "name": "fluffy",
+			  "req" : ["!weapon", "!liquid", ["textile", "|flexible"]],
+			"flags" : []
+		},
+		{
+			  "name": "fluffy",
+			  "req" : ["weapon"],
+			"flags" : ["bad", "silly"]
+		},
+		{
+			  "name": "underwhelming",
+			  "req" : ["!good"],
+			"flags" : ["bad", "silly"]
 		},
 		{
 		 	  "name": "broken",
-			  "req" : [],
-			"flags" : ["broken"]
+			  "req" : ["!liquid"],
+			"flags" : []
 		},
 		{
 			  "name": "magical",
@@ -44,9 +141,24 @@
 			"flags" : ["magical"]
 		},
 		{
+			  "name": "enchanted",
+			  "req" : ["weapon"],
+			"flags" : ["magical"]
+		},
+		{
+			  "name": "cursed",
+			  "req" : ["!blessed"],
+			"flags" : ["magical", "cursed"]
+		},
+		{
+			  "name": "blessed",
+			  "req" : [],
+			"flags" : ["magical", "blessed"]
+		},
+		{
 		 	  "name": "ancient",
 			  "req" : [],
-			"flags" : ["magical"]
+			"flags" : ["good", "magical"]
 		}
 	]
 }

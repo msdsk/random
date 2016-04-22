@@ -1,4 +1,25 @@
 var rb = {
+	deepCopy: function(obj){
+		var newObj
+		if(Array.isArray(obj)){
+			newObj = []
+			var i=0, ii=obj.length;
+			for(i; i<ii; i++){
+				newObj.push(rb.deepCopy(obj[i]))
+			}
+		} else if(typeof obj === "object"){
+			newObj = {};
+			for(var key in obj){
+				if(obj.hasOwnProperty(key)){
+					newObj[key] = rb.deepCopy(obj[key]);
+				}
+			}
+		} else {
+			newObj = obj
+		}
+		return newObj
+	},
+	
 	readableNumber : function(num){
 		if(num > 1e9){
 			return (Math.round(num / 1e7)/100) + " bilion"
@@ -48,6 +69,10 @@ var rb = {
 
 	pushFlags : function(newFlags, oldFlags, noPush){ //
 		//noPush - keyword put in flags that should not return to a higher object (usually one denoting already borrowed from it, like, "world-magic" shouldn't be pushed back to word flag array)
+		if(!oldFlags){
+			return;
+		}
+		
 		if(Array.isArray(newFlags)){
 			var i = 0, ii = newFlags.length;
 			for(i; i<ii; i++){
@@ -133,14 +158,22 @@ var rb = {
 				/*throw err;*/
 			}
 			var roll = rb.random(seed, 0, data.length - 1);
-			if(rb.checkFlags(data[roll].req, flags)){
+			if(Object.keys(flags).length !== 0 && flags.length !== 0){
+				if(rb.checkFlags(data[roll].req, flags)){
+					rb.pushFlags(data[roll].flags, flags);
+					perksArr.push(data[roll]);
+					data.splice(roll, 1);
+				} else {
+					data.splice(roll, 1);
+					i--;
+				}
+			} else {
+				console.log("falls through!", flags);
 				rb.pushFlags(data[roll].flags, flags);
 				perksArr.push(data[roll]);
 				data.splice(roll, 1);
-			} else {
-				data.splice(roll, 1);
-				i--;
 			}
+			
 			seed = rb.random(seed + 1);
 		}
 		return perksArr;

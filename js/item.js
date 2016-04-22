@@ -1,38 +1,59 @@
 var config = {
-	mainAdjProb : 2
+	materialProb : 90,
+	mainAdjProb : 60,
+	secondaryDecProb : 50
 }
 
 function Item(seed){
 	var item = this;
 	
 	item.seed = seed;
-	item.data = itemsData;
+	item.data = rb.deepCopy(itemsData);
 		
 	item.flags = {};
 	item.type = {};
 	item.mainAdj = {};
-	item.string = ``;
+	item.material = {};
+	item.string = `<b>`;
 	
 	item.init = function(){
+		
+		function rollMaterial(){
+			if(rb.random(seed + 1, 0, 100) < config.materialProb && !item.flags["liquid"]){
+				item.material = rb.perksRoll(item.seed, item.data.materials, item.flags)[0];
+				rb.pushFlags(item.material.flags, item.flags);
+				item.seed += .01;
+				
+			}			
+		}
+		rollMaterial();
+		
 		function rollType(){
-			item.type = rb.probRoll(item.data.type, [], item.seed).val;
-			rb.pushFlags(item.type.flags, item.flags);
+			console.log(item.flags);
+			item.type = rb.perksRoll(item.seed, item.data.type, item.flags)[0];
+			//rb.pushFlags(item.type.flags, item.flags);
 			item.seed += .01;
 		}
 		rollType();
 		
 		function rollMainAdj(){
-			if(rb.random(seed + 1, 0, config.mainAdjProb) > 0){
+			if(rb.random(seed + 2, 0, 100) < config.mainAdjProb){
 				item.mainAdj = rb.perksRoll(item.seed, item.data.adjectives, item.flags)[0];
+				rb.pushFlags(item.mainAdj.flags, item.flags);
+				item.seed += .01;
+				
+				item.string += `${item.mainAdj.name} `;
 			}
 		}
 		rollMainAdj();
 		
+		
+		item.string += `${item.material.name?item.material.name+" ":""}${item.type.name}</b>`;
+		
+		
 		function secondaryDesc(){
 			
 		}
-		
-		item.string += `<b>${item.mainAdj.name?item.mainAdj.name:""} ${item.type.name}</b>`
 	}
 	item.init();
 	
