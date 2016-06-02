@@ -13,14 +13,15 @@
 				</label>
 				<label title="number of items to generate at one go">
 					<span class="legend">And next:</span>
-					<input type="number" id="no" value="5" max="100" min="1">
+					<input type="number" id="no" value="2" max="100" min="1">
 				</label>
 				<div class="tool-cont tool-cont-r">
+					<button id="itemButtonRandom" class="button-sec" disabled>Generate random seed!</button>
 					<button id="itemButton" disabled>Generate!</button>
 				</div>
 			</form>
 		</div>
-		<div id="result">Please wait, loading data</div>
+		<div id="result" class="item-result">Please wait, loading data</div>
 	</div>
 </body>
 <script src="js/rollbox.js"></script>

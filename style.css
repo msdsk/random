@@ -5,6 +5,7 @@
 3. STYLE KONTENERÓW
 	3.1. Rozwijane szczegóły
 4. STYLE TEKSTU
+5. POJEDYNCZE STRONY
 */
 
 /*1. RESET ---------------------------------------------------------------*/
@@ -161,9 +162,20 @@ button{
 button:hover{
 	animation:  fancyColor 3s infinite linear;
 }
+button:active{
+	transform: translateY(1px);
+}
 button[disabled]{
 	background: #d4d4d4;
 	pointer-events: none;
+}
+.button-sec{
+	background-color: #FFF;
+	color: #000;
+	transition: background-color .3s, color .3s;
+}
+.button-sec:hover{
+	background-color: #ffe8c8;
 }
 label{
 	cursor: pointer;
@@ -268,4 +280,9 @@ input:not(:checked) ~ .more{
 	.mainCont > .center-width{
 		margin: 0;
 	}
+}
+
+/*5. POJEDYNCZE STRONY*/
+.item-result > div:first-child::first-letter{
+	text-transform: capitalize;
 }

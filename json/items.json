@@ -12,11 +12,121 @@
 			  "name": "sword",
 			  "req" : ["edge"],
 			"flags" : ["weapon"]
-		}
+		},
 		{
 			  "name": "bow",
-			  "req" : ["metal", "!wood"],
+			  "req" : ["metal", "|wood"],
 			"flags" : ["weapon"]
+		},
+		{
+			  "name": "crossbow",
+			  "req" : ["metal", "|wood"],
+			"flags" : ["weapon"]
+		},
+		{
+			  "name": "sling",
+			  "req" : ["metal", "|wood"],
+			"flags" : ["weapon"]
+		},
+		{
+			  "name": "blade",
+			  "req" : ["edge"],
+			"flags" : ["weapon"]
+		},
+		{
+			  "name": "crowbar",
+			  "req" : ["metal"],
+			"flags" : ["weapon"]
+		},
+		{
+			  "name": "hammer",
+			  "req" : ["metal", "|wood"],
+			"flags" : ["weapon"]
+		},
+		{
+			  "name": "dagger",
+			  "req" : ["edge"],
+			"flags" : ["weapon"]
+		},
+		{
+			  "name": "axe",
+			  "req" : ["edge"],
+			"flags" : ["weapon"]
+		},
+		{
+			  "name": "spear",
+			  "req" : ["edge"],
+			"flags" : ["weapon"]
+		},
+		{
+			  "name": "spear",
+			  "req" : ["metal", "|wood", "|edge"],
+			"flags" : ["weapon"]
+		},
+		{
+			  "name": "shield",
+			  "req" : ["metal", "|wood"],
+			"flags" : ["armor"]
+		},
+		{
+			  "name": "gauntlet",
+			  "req" : ["metal", "|textile"],
+			"flags" : ["armor"]
+		},
+		{
+			  "name": "armor",
+			  "req" : ["metal", "|wood", "|textile"],
+			"flags" : ["armor"]
+		},
+		{
+			  "name": "gambeson",
+			  "req" : ["|textile"],
+			"flags" : ["armor"]
+		},
+		{
+			  "name": "full plate",
+			  "req" : ["|metal", "|wood"],
+			"flags" : ["armor"]
+		},
+		{
+			  "name": "gloves",
+			  "req" : ["metal", "|wood", "|textile"],
+			"flags" : ["armor"]
+		},
+		{
+			  "name": "trousers",
+			  "req" : ["metal", "|wood", "|textile"],
+			"flags" : ["armor"]
+		},
+		{
+			  "name": "transom",
+			  "req" : ["metal", "|wood"],
+			"flags" : ["armor", "big"]
+		},
+		{
+			  "name": "harph",
+			  "req" : ["wood", "|metal", "|valuable"],
+			"flags" : ["trinket", "utility"]
+		},
+		{
+			  "name": "lute",
+			  "req" : ["wood", "|metal", "|valuable"],
+			"flags" : ["trinket", "utility"]
+		},
+		{
+			  "name": "guitar",
+			  "req" : ["wood", "|metal", "|valuable"],
+			"flags" : ["trinket", "utility"]
+		},
+		{
+			  "name": "flute",
+			  "req" : ["wood", "|metal", "|valuable"],
+			"flags" : ["trinket", "utility"]
+		},
+		{
+			  "name": "bagpipe",
+			  "req" : ["flexible", "|valuable"],
+			"flags" : ["trinket", "utility"]
 		},
 		{
 			  "name": "potion",
@@ -29,9 +139,44 @@
 			"flags" : ["trinket"]
 		},
 		{
+			  "name": "rope",
+			  "req" : ["textile"],
+			"flags" : ["trinket"]
+		},
+		{
+			  "name": "kit",
+			  "req" : [],
+			"flags" : ["trinket", "utility"]
+		},
+		{
+			  "name": "talisman",
+			  "req" : [],
+			"flags" : ["trinket"]
+		},
+		{
+			  "name": "scabbard",
+			  "req" : ["flexible", "|wood", "|metal", "|valuable"],
+			"flags" : ["trinket"]
+		},
+		{
 			  "name": "orb",
 			  "req" : ["metal", "|glass", "|magical"],
 			"flags" : ["magical", "trinket"]
+		},
+		{
+			  "name": "shard",
+			  "req" : [],
+			"flags" : ["magical", "trinket"]
+		},
+		{
+			  "name": "mask",
+			  "req" : ["!liquid"],
+			"flags" : ["magical", "trinket"]
+		},
+		{
+			  "name": "mirror",
+			  "req" : ["metal"],
+			"flags" : ["trinket"]
 		},
 		{
 			  "name": "scroll",
@@ -39,14 +184,54 @@
 			"flags" : ["magical", "trinket"]
 		},
 		{
-			  "name": "crown",
-			  "req" : ["metal", "|valuable", "|wood"],
+			  "name": "book",
+			  "req" : ["writable"],
 			"flags" : ["magical", "trinket"]
 		},
 		{
 			  "name": "apparatus",
 			  "req" : ["!flexible"],
 			"flags" : ["utility"]
+		},
+		{
+			  "name": "necklace",
+			  "req" : ["valuable", "|metal", "|wood"],
+			"flags" : ["trinket", "utility"]
+		},
+		{
+			  "name": "ring",
+			  "req" : ["metal", "|wood", "|durable"],
+			"flags" : ["trinket", "utility", "magical"]
+		},
+		{
+			  "name": "idol",
+			  "req" : [],
+			"flags" : ["magical", "trinket"]
+		},
+		{
+			  "name": "dice",
+			  "req" : ["durable"],
+			"flags" : ["trinket"]
+		},
+		{
+			  "name": "crown",
+			  "req" : ["metal", "|valuable", "|wood"],
+			"flags" : ["magical", "trinket"]
+		},
+		{
+			  "name": "scepter",
+			  "req" : ["metal", "|valuable", "|wood"],
+			"flags" : ["trinket"]
+		},
+		{
+			  "name": "wand",
+			  "req" : ["!flexible"],
+			"flags" : ["trinket", "magical"]
+		},
+		{
+			  "name": "bomb",
+			  "req" : [],
+			"flags" : ["weapon"]
 		}
 	],
 	"materials" : [
@@ -67,8 +252,32 @@
 			"flags" : ["edge", "durable", "metal"]
 		},
 		{
+			  "name": "silver",
+			"flags" : ["edge", "durable", "metal", "valuable"]
+		},
+		{
 			  "name": "wooden",
 			"flags" : ["wood", "durable"]
+		},
+		{
+			  "name": "stone",
+			"flags" : ["durable"]
+		},
+		{
+			  "name": "oil",
+			"flags" : ["liquid"]
+		},
+		{
+			  "name": "water",
+			"flags" : ["liquid"]
+		},
+		{
+			  "name": "air",
+			"flags" : ["liquid"]
+		},
+		{
+			  "name": "bone",
+			"flags" : ["edge", "durable"]
 		},
 		{
 			  "name": "cloth",
@@ -76,6 +285,10 @@
 		},
 		{
 			  "name": "leather",
+			"flags" : ["flexible", "textile"]
+		},
+		{
+			  "name": "hide",
 			"flags" : ["flexible", "textile"]
 		},
 		{
@@ -97,18 +310,122 @@
 		{
 			  "name": "golden",
 			"flags" : ["valuable", "metal"]
+		},
+		{
+			  "name": "ruby",
+			"flags" : ["magical", "gem", "valuable", "durable"]
 		}
 	],
 	"adjectives": [
 		{
 			  "name": "awesome",
-			  "req" : ["!bad"],
+			  "req" : ["!bad", "!average"],
 			"flags" : ["good"]
 		},
 		{
 		 	  "name": "powerful",
-			  "req" : ["!bad"],
+			  "req" : ["!bad", "!average"],
 			"flags" : ["good"]
+		},
+		{
+		 	  "name": "awesome",
+			  "req" : ["!bad", "!average"],
+			"flags" : ["good"]
+		},
+		{
+		 	  "name": "amazing",
+			  "req" : ["!bad", "!average"],
+			"flags" : ["good"]
+		},
+		{
+		 	  "name": "terrifying",
+			  "req" : [],
+			"flags" : ["offensive"]
+		},
+		{
+		 	  "name": "gem-encrusted",
+			  "req" : ["!creature"],
+			"flags" : ["valuable"]
+		},
+		{
+		 	  "name": "breathtaking",
+			  "req" : ["!bad", "!average"],
+			"flags" : ["good"]
+		},
+		{
+		 	  "name": "invicible",
+			  "req" : ["!bad", "!average"],
+			"flags" : ["good"]
+		},
+		{
+		 	  "name": "endless",
+			  "req" : [],
+			"flags" : ["magical"]
+		},
+		{
+		 	  "name": "ghost",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "invisible",
+			  "req" : [],
+			"flags" : ["magical"]
+		},
+		{
+		 	  "name": "vibrating",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "singing",
+			  "req" : [],
+			"flags" : ["intellignet"]
+		},
+		{
+		 	  "name": "talking",
+			  "req" : [],
+			"flags" : ["intellignet"]
+		},
+		{
+		 	  "name": "intelligent",
+			  "req" : [],
+			"flags" : ["intellignet"]
+		},
+		{
+		 	  "name": "brave",
+			  "req" : ["intellignet"],
+			"flags" : []
+		},
+		{
+		 	  "name": "concious",
+			  "req" : [],
+			"flags" : ["intellignet"]
+		},
+		{
+		 	  "name": "decent",
+			  "req" : ["!good", "!bad"],
+			"flags" : ["average"]
+		},
+		{
+			  "name": "underwhelming",
+			  "req" : ["!good", "!average"],
+			"flags" : ["bad"]
+		},
+		{
+			  "name": "weak",
+			  "req" : ["!good", "!average"],
+			"flags" : ["bad"]
+		},
+		{
+			  "name": "underpowered",
+			  "req" : ["!good", "!average"],
+			"flags" : ["bad"]
+		},
+		{
+			  "name": "spent",
+			  "req" : ["!good", "!average", "magical", "secondary"],
+			"flags" : ["broken"]
 		},
 		{
 			  "name": "silly",
@@ -126,13 +443,8 @@
 			"flags" : ["bad", "silly"]
 		},
 		{
-			  "name": "underwhelming",
-			  "req" : ["!good"],
-			"flags" : ["bad", "silly"]
-		},
-		{
 		 	  "name": "broken",
-			  "req" : ["!liquid"],
+			  "req" : ["!liquid", "!creature"],
 			"flags" : []
 		},
 		{
@@ -148,17 +460,670 @@
 		{
 			  "name": "cursed",
 			  "req" : ["!blessed"],
-			"flags" : ["magical", "cursed"]
+			"flags" : ["magical", "cursed", "bad"]
 		},
 		{
 			  "name": "blessed",
-			  "req" : [],
-			"flags" : ["magical", "blessed"]
+			  "req" : ["!cursed"],
+			"flags" : ["magical", "blessed", "good"]
 		},
 		{
 		 	  "name": "ancient",
+			  "req" : ["!new"],
+			"flags" : ["good", "magical", "old"]
+		},
+		{
+		 	  "name": "prototype",
+			  "req" : ["!old", "!creature", "!cosmic"],
+			"flags" : ["new"]
+		},
+		{
+		 	  "name": "giant",
+			  "req" : ["!small"],
+			"flags" : ["big"]
+		},
+		{
+		 	  "name": "indestructible",
+			  "req" : ["!creature", "!liquid"],
+			"flags" : ["good"]
+		},
+		{
+		 	  "name": "unbreakable",
+			  "req" : ["!creature", "!liquid"],
+			"flags" : ["good"]
+		},
+		{
+		 	  "name": "all-powerful",
+			  "req" : ["!creature", "!liquid", "!bad"],
+			"flags" : ["good"]
+		},
+		{
+		 	  "name": "ever-failing",
+			  "req" : ["!creature", "!liquid", "!good"],
+			"flags" : ["bad"]
+		},
+		{
+		 	  "name": "oversized",
+			  "req" : ["!adj", "!small"],
+			"flags" : ["big"]
+		},
+		{
+		 	  "name": "tiny",
+			  "req" : ["!big"],
+			"flags" : ["small"]
+		},
+		{
+		 	  "name": "glowing",
 			  "req" : [],
-			"flags" : ["good", "magical"]
+			"flags" : []
+		},
+		{
+		 	  "name": "dark",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "evil",
+			  "req" : ["!blessed"],
+			"flags" : ["evil", "cursed"]
+		},
+		{
+		 	  "name": "good",
+			  "req" : ["!cursed"],
+			"flags" : ["blessed"]
+		},
+		{
+		 	  "name": "undersized",
+			  "req" : ["!big", "!adj"],
+			"flags" : ["small"]
+		},
+		{
+		 	  "name": "universal",
+			  "req" : ["!small", "cosmic"],
+			"flags" : []
+		},
+		{
+		 	  "name": "elven",
+			  "req" : ["!creature"],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "dwarven",
+			  "req" : ["!creature"],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "gnomish",
+			  "req" : ["!creature"],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "drowish",
+			  "req" : ["!creature"],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "dragonish",
+			  "req" : ["!creature"],
+			"flags" : ["creature", "magical"]
+		},
+		{
+		 	  "name": "druidic",
+			  "req" : ["!creature"],
+			"flags" : ["creature", "magical"]
+		},
+		{
+		 	  "name": "wizardic",
+			  "req" : ["!creature"],
+			"flags" : ["creature", "magical"]
+		},
+		{
+		 	  "name": "mind controlling",
+			  "req" : [],
+			"flags" : ["adj", "magical"]
+		},
+		{
+		 	  "name": "poisoning",
+			  "req" : [],
+			"flags" : ["offensive"]
+		},
+		{
+		 	  "name": "biting",
+			  "req" : ["offensive"],
+			"flags" : []
+		},
+		{
+		 	  "name": "shrieking",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "relic",
+			  "req" : ["!bad", "!average"],
+			"flags" : ["good"]
+		},
+		{
+		 	  "name": "berserker",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "glittering",
+			  "req" : ["!creature"],
+			"flags" : []
+		},
+		{
+		 	  "name": "razor",
+			  "req" : ["!creature"],
+			"flags" : []
+		},
+		{
+		 	  "name": "forbidden",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "folding",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "foolish",
+			  "req" : ["!average", "!good"],
+			"flags" : ["bad"]
+		},
+		{
+		 	  "name": "planar",
+			  "req" : [],
+			"flags" : ["magical"]
+		},
+		{
+		 	  "name": "jumping",
+			  "req" : [],
+			"flags" : []
 		}
-	]
+	],
+	"nouns" : [
+		{
+		 	  "name": "elves",
+			  "req" : ["!creature"],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "dwarves",
+			  "req" : ["!creature"],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "ghosts",
+			  "req" : [],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "liches",
+			  "req" : ["!creature"],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "undead",
+			  "req" : ["!creature"],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "undeath",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "fools",
+			  "req" : ["creature"],
+			"flags" : []
+		},
+		{
+		 	  "name": "trickster",
+			  "req" : [],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "gnomes",
+			  "req" : ["!creature"],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "drows",
+			  "req" : ["!creature"],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "birds",
+			  "req" : [],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "spiders",
+			  "req" : [],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "ooze",
+			  "req" : [],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "mind",
+			  "req" : [],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "knowledge",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "dispel",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "speed",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "dragons",
+			  "req" : ["!creature"],
+			"flags" : ["creature", "magical"]
+		},
+		{
+		 	  "name": "drake",
+			  "req" : ["!creature"],
+			"flags" : ["creature", "magical"]
+		},
+		{
+		 	  "name": "giants",
+			  "req" : ["!creature"],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "druids",
+			  "req" : [],
+			"flags" : ["creature", "magical"]
+		},
+		{
+		 	  "name": "wizards",
+			  "req" : [],
+			"flags" : ["creature", "magical"]
+		},
+		{
+		 	  "name": "spells",
+			  "req" : [],
+			"flags" : ["magical"]
+		},
+		{
+		 	  "name": "rangers",
+			  "req" : [],
+			"flags" : ["creature", "magical"]
+		},
+		{
+		 	  "name": "warriors",
+			  "req" : [],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "psion",
+			  "req" : [],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "devourer",
+			  "req" : [],
+			"flags" : ["creature"]
+		},
+		{
+		 	  "name": "poison",
+			  "req" : [],
+			"flags" : ["offensive"]
+		},
+		{
+		 	  "name": "responsibility",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "fortune",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "discord",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "command",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "luck",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "earth",
+			  "req" : [],
+			"flags" : ["cosmic"]
+		},
+		{
+		 	  "name": "world",
+			  "req" : [],
+			"flags" : ["cosmic"]
+		},
+		{
+		 	  "name": "air",
+			  "req" : [],
+			"flags" : ["cosmic"]
+		},
+		{
+		 	  "name": "sun",
+			  "req" : [],
+			"flags" : ["cosmic"]
+		},
+		{
+		 	  "name": "moon",
+			  "req" : [],
+			"flags" : ["cosmic"]
+		},
+		{
+		 	  "name": "stars",
+			  "req" : [],
+			"flags" : ["cosmic"]
+		},
+		{
+		 	  "name": "light",
+			  "req" : [],
+			"flags" : ["cosmic"]
+		},
+		{
+		 	  "name": "sound",
+			  "req" : [],
+			"flags" : ["cosmic"]
+		},
+		{
+		 	  "name": "universe",
+			  "req" : [],
+			"flags" : ["cosmic"]
+		},
+		{
+		 	  "name": "angels",
+			  "req" : ["!silly"],
+			"flags" : ["mythic", "creature"]
+		},
+		{
+		 	  "name": "strength",
+			  "req" : ["!bad"],
+			"flags" : ["adj"]
+		},
+		{
+		 	  "name": "power",
+			  "req" : ["!bad"],
+			"flags" : ["adj"]
+		},
+		{
+		 	  "name": "hexes",
+			  "req" : [],
+			"flags" : ["magical"]
+		},
+		{
+		 	  "name": "bravery",
+			  "req" : [],
+			"flags" : ["adj"]
+		},
+		{
+		 	  "name": "destiny",
+			  "req" : [],
+			"flags" : []
+		}		
+	],
+	"gerunds":[
+		{
+		 	  "name": "cutting",
+			  "req" : ["edge"],
+			"flags" : ["offensive"]
+		},
+		{
+		 	  "name": "folding",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "smashing",
+			  "req" : ["weapon"],
+			"flags" : ["offensive"]
+		},
+		{
+		 	  "name": "slashing",
+			  "req" : ["weapon"],
+			"flags" : ["offensive"]
+		},
+		{
+		 	  "name": "maiming",
+			  "req" : ["weapon"],
+			"flags" : ["offensive"]
+		},
+		{
+		 	  "name": "piercing",
+			  "req" : ["weapon"],
+			"flags" : ["offensive"]
+		},
+		{
+		 	  "name": "chopping",
+			  "req" : ["weapon"],
+			"flags" : ["offensive"]
+		},
+		{
+		 	  "name": "detection",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "desctruction",
+			  "req" : [],
+			"flags" : ["offensive", "magical"]
+		},
+		{
+		 	  "name": "explosion",
+			  "req" : [],
+			"flags" : ["offensive"]
+		},
+		{
+		 	  "name": "blasting",
+			  "req" : [],
+			"flags" : ["offensive"]
+		},
+		{
+		 	  "name": "poisoning",
+			  "req" : ["offensive", "|utility"],
+			"flags" : ["offensive"]
+		},
+		{
+		 	  "name": "creation",
+			  "req" : ["!creature"],
+			"flags" : ["creation", "magical", "cosmic"]
+		},
+		{
+		 	  "name": "fortification",
+			  "req" : ["!creature"],
+			"flags" : ["defensive"]
+		},
+		{
+		 	  "name": "fortification",
+			  "req" : ["!creature"],
+			"flags" : []
+		},
+		{
+		 	  "name": "summoning",
+			  "req" : ["creature"],
+			"flags" : ["creation", "magical"]
+		},
+		{
+		 	  "name": "liberation",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "defence",
+			  "req" : [],
+			"flags" : ["defensive", "magical"]
+		},
+		{
+		 	  "name": "acquisition",
+			  "req" : ["!creature"],
+			"flags" : ["creation"]
+		},
+		{
+		 	  "name": "change",
+			  "req" : [],
+			"flags" : ["change"]
+		},
+		{
+		 	  "name": "alteration",
+			  "req" : [],
+			"flags" : ["change"]
+		},
+		{
+		 	  "name": "enhancement",
+			  "req" : [],
+			"flags" : ["change"]
+		},
+		{
+		 	  "name": "replacement",
+			  "req" : [],
+			"flags" : ["change"]
+		},
+		{
+		 	  "name": "spellthieving",
+			  "req" : ["magical"],
+			"flags" : []
+		},
+		{
+		 	  "name": "jumping",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "devouring",
+			  "req" : [],
+			"flags" : []
+		},
+		{
+		 	  "name": "animating",
+			  "req" : [],
+			"flags" : []
+		}		
+	],
+	"description":{
+		"creation":[
+			{
+				  "text": "this #type was forged by dwarves",
+				  "req" : ["metal", "!creature", "|elf"],
+				"flags" : []
+			},
+			{
+				  "text": "this #type was created by elves",
+				  "req" : ["!creature", "|elf"],
+				"flags" : []
+			},
+			{
+				  "text": "this #type is a work of gnomes",
+				  "req" : ["!creature", "|elf"],
+				"flags" : []
+			},
+			{
+				  "text": "this #type was created by gods at the beginning of time",
+				  "req" : ["!bad", "!new"],
+				"flags" : ["ancient"]
+			},
+			{
+				  "text": "this #type was first owned by a great hero of an age long past",
+				  "req" : ["!bad", "!new"],
+				"flags" : ["ancient"]
+			},
+			{
+				  "text": "this #type was conjured by an evil mage",
+				  "req" : ["cursed"],
+				"flags" : []
+			},
+			{
+				  "text": "this #type was given to humans by gods",
+				  "req" : ["!cursed"],
+				"flags" : ["blessed"]
+			},
+			{
+				  "text": "this #type was invented for long journeys",
+				  "req" : ["utility"],
+				"flags" : []
+			},
+			{
+				  "text": "this #type was invented for navigation",
+				  "req" : ["utility"],
+				"flags" : []
+			},
+			{
+				  "text": "this #type was created by accident",
+				  "req" : ["utility"],
+				"flags" : []
+			},
+			{
+				  "text": "this #type was created by accident",
+				  "req" : ["utility"],
+				"flags" : []
+			},
+			{
+				  "text": "creation of this #type was possible thanks to a new knowledge in the field",
+				  "req" : ["new"],
+				"flags" : []
+			},
+			{
+				  "text": "this #type was created using a technique that is now long forgotten",
+				  "req" : ["!new"],
+				"flags" : []
+			},
+			{
+				  "text": "some say this #type could not have been created on this world",
+				  "req" : ["!new"],
+				"flags" : []
+			},
+			{
+				  "text": "this #type was found recently by a group of adventurers",
+				  "req" : [],
+				"flags" : []
+			},
+			{
+				  "text": "this #type spent thousands of years hidden in dungeons",
+				  "req" : ["!new"],
+				"flags" : []
+			},
+			{
+				  "text": "this #type was created for a wealthy noble",
+				  "req" : [],
+				"flags" : []
+			},
+			{
+				  "text": "this #type was created by a lunatic wizard",
+				  "req" : ["bad"],
+				"flags" : []
+			},
+			{
+				  "text": "this #type just dropped out of thin air one day as a punishment for the human kind",
+				  "req" : ["bad", "|silly"],
+				"flags" : []
+			},
+			{
+				  "text": "its origins are shrouded by mystery",
+				  "req" : [],
+				"flags" : []
+			}
+		]
+	}
 }

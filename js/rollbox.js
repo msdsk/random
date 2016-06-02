@@ -1,4 +1,8 @@
 var rb = {
+	capitalize : function(str){
+		return str.charAt(0).toUpperCase() + str.slice(1);
+	},
+	
 	deepCopy: function(obj){
 		var newObj
 		if(Array.isArray(obj)){
@@ -168,7 +172,6 @@ var rb = {
 					i--;
 				}
 			} else {
-				console.log("falls through!", flags);
 				rb.pushFlags(data[roll].flags, flags);
 				perksArr.push(data[roll]);
 				data.splice(roll, 1);
